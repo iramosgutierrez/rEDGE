@@ -4,7 +4,7 @@
 \alias{get_extinction_prob}
 \title{Probability of Extinction}
 \usage{
-get_extinction_prob(table)
+get_extinction_prob(table, verbose = T)
 }
 \description{
 Probability of Extinction

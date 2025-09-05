@@ -125,7 +125,7 @@ create_pext_by_cat <- function(n = 1000000){
 #'
 #'
 #'
-get_extinction_prob <- function(table){
+get_extinction_prob <- function(table, verbose = T){
 
   if(!inherits(table, c("data.frame", "tibble"))){
     stop("table object should be a tibble or data.frame")
@@ -139,7 +139,12 @@ get_extinction_prob <- function(table){
 
 
   for(sp in table$species){
-    progressbar(which(table$species == sp), length(table$species), msg = "Calculating extinction probabilites...")
+
+    if(isTRUE(verbose)){
+      progressbar(which(table$species == sp),
+                  length(table$species),
+                  msg = "Calculating extinction probabilites...")
+    }
     cat.i <- table$RL.cat[table$species==sp]
     if(cat.i =="NE"){pext.i <- runif(1,0.0001, 0.9999)}else
       if(cat.i =="EX"){

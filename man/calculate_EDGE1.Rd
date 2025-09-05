@@ -4,12 +4,14 @@
 \alias{calculate_EDGE1}
 \title{Calculate EDGE index}
 \usage{
-calculate_EDGE1(tree, table)
+calculate_EDGE1(tree, table, sort.list = FALSE)
 }
 \arguments{
 \item{tree}{a phylo object.}
 
 \item{table}{a tibble or data frame with two columns, named "species" and "RL.cat"}
+
+\item{sort.list}{Logical. If TRUE, the EDGE list will be sorted from higher to lower values.}
 }
 \value{
 a data frame with the input table and the EDGE metric (sensu  Isaac et al., 2007).

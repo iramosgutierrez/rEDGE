@@ -2,11 +2,14 @@
 #'
 #' @param tree a phylo object.
 #' @param table a tibble or data frame with two columns, named "species" and "RL.cat"
+#' @param sort.list Logical. If TRUE, the EDGE list will be sorted from higher to lower values.
 #'
 #' @return a data frame with the input table and the EDGE metric (sensu  Isaac et al., 2007).
 #' @export
 #'
-calculate_EDGE1 <- function(tree, table){
+calculate_EDGE1 <- function(tree,
+                            table,
+                            sort.list = FALSE){
 
   if(!all(tree$tip.label %in% table$species )){
     stop("Some species in 'tree$tip.label' are not included in 'table$species'")
@@ -28,7 +31,7 @@ calculate_EDGE1 <- function(tree, table){
   table$pext[table$RL.cat == "CR"] <- 4
 
 
-  ED <- caper::ed.calc(tree)
+  ED <- suppressWarnings(caper::ed.calc(tree))
   ED_res <- ED$spp
 
   table <- merge(table, ED_res)
@@ -36,6 +39,10 @@ calculate_EDGE1 <- function(tree, table){
   table$EDGE <- log(1+table$ED) + table$pext*(log(2))
 
    table <- table[,-which(colnames(table) == "pext")]
+
+   if(isTRUE(sort.list)){
+     table <- table[order(table$EDGE, decreasing = T),]
+   }
 
    return(table)
 }
