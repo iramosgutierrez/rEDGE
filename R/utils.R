@@ -148,14 +148,12 @@ get_extinction_prob <- function(table, verbose = T){
                   msg = "Calculating extinction probabilites...")
     }
     cat.i <- table$RL.cat[table$species==sp]
-    if(cat.i %in% c("NE", "DD")){pext.i <- runif(1,0.0001, 0.9999)
-    }else if(cat.i =="EX"){
-        cat.i =="CR"
-      }else if(cat.i =="EW"){
-        cat.i =="CR"
-      }else if(cat.i =="CD"){
-        cat.i =="NT"
-      }else{
+    if(cat.i %in% c("NE", "DD")){
+      pext.i <- runif(1,0.0001, 0.9999)
+    }else{
+      if(cat.i %in% c("EX", "EW")){cat.i <- "CR"}
+      if(cat.i =="CD"){cat.i <-"NT"}
+
         pext.i <- sample(cat_pext_table$pext[cat_pext_table$RL.cat==cat.i], size = 1)
       }
     table$pext[table$species== sp] <- pext.i
