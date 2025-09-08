@@ -125,30 +125,44 @@ calculate_EDGE2 <- function(tree,
 }
 
 
+#' Multiple iteration EDGE2 calculating function.
+#'
+#' @param n.iter Integer. Number of times the function will be run.
+#' @param parallelize Logical. If TRUE, several CPU cores will be used to compute EDGE scores.
+#' @param n.cores Integer. Number of cores to use simultaneoulsly. Default is the number of available ones minus one.
+#'
+#' @inheritParams calculate_EDGE2
+#'
+#' @returns A list of length = n.iter
+#'
+#' @author I. Ramos-Gutiérrez.
+#'
+#' @export
+#'
+calculate_EDGE2_multiple <- function(tree,
+                            table,
+                            verbose = T,
+                            sort.list = FALSE,
+                            n.iter = 100,
+                            parallelize = FALSE,
+                            n.cores = NULL){
 
-# calculate_EDGE2_multiple <- function(tree,
-#                             table,
-#                             verbose = T,
-#                             sort.list = FALSE,
-#                             n.iter = 100,
-#                             parallelize = FALSE,
-#                             n.cores = NULL){
-#
-#
-#   if(is TRUE(parallelize)){
-#     n.cores <- future::availableCores()-1
-#     future::plan(multisession, workers = n.cores)
-#
-#     future.apply::future_lapply(1:n.iter,FUN = calculate_EDGE2,
-#                                        tree = tree, table = table, sort.list = T, verbose = T)
-#   }else{
-#     EDGElist <- lapply(1:n.iter,FUN = calculate_EDGE2_individual,
-#                        tree = tree, table = table, sort.list = T, verbose = T)
-#   }
-#
-#  return(EDGElist)
-#
-# }
+
+  if(isTRUE(parallelize)){
+  stop("Parallelization is not implemented yet. Sorry for the inconvenience")
+  #   n.cores <- future::availableCores()-1
+  #   future::plan(multisession, workers = n.cores)
+  #
+  #   future.apply::future_lapply(1:n.iter,FUN = calculate_EDGE2,
+  #                                      tree = tree, table = table, sort.list = T, verbose = T)
+  }else{
+    EDGElist <- lapply(1:n.iter,FUN = calculate_EDGE2,
+                       tree = tree, table = table, sort.list = T)
+  }
+
+ return(EDGElist)
+
+}
 
 
 

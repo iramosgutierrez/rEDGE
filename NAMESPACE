@@ -2,3 +2,4 @@
 
 export(calculate_EDGE1)
 export(calculate_EDGE2)
+export(calculate_EDGE2_multiple)
