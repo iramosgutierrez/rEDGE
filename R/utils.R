@@ -57,8 +57,8 @@ progressbar <- function (curr.iter, tot.iter, ini.iter = 1, units = "mins",
 
 
 cat_pext <- function(){
-  cat.pext <- data.frame(rl.cat = rev(c("CR","EN","VU","NT","LC")) ,
-                         pext = rev(c(0.97, 0.97/2, 0.97/4,0.97/8,0.97/16)))
+  cat.pext <- data.frame(rl.cat = rev(c("CR", "EN",   "VU",   "NT",   "LC")) ,
+                         pext   = rev(c(0.97, 0.97/2, 0.97/4, 0.97/8, 0.97/16)))
   return(cat.pext)
 }
 
@@ -86,9 +86,11 @@ create_pext_by_cat <- function(n = 1000000){
   data$rank.pext[data$rank.pext >= 1] <- 0.9999
   pext.LC <- data.frame(RL.cat = "LC", pext =data$rank.pext[data$pext == pext.tap[2]])
   pext.NT <- data.frame(RL.cat = "NT", pext =data$rank.pext[data$pext == pext.tap[3]])
+  pext.CD <- data.frame(RL.cat = "CD", pext =data$rank.pext[data$pext == pext.tap[3]]) # Conservation dependent ~ NT
   pext.VU <- data.frame(RL.cat = "VU", pext =data$rank.pext[data$pext == pext.tap[4]])
   pext.EN <- data.frame(RL.cat = "EN", pext =data$rank.pext[data$pext == pext.tap[5]])
   pext.CR <- data.frame(RL.cat = "CR", pext =data$rank.pext[data$pext == pext.tap[6]])
+  pext.EW <- data.frame(RL.cat = "EW", pext =data$rank.pext[data$pext == pext.tap[6]]) #EW ~ CR
   pext.obj <- rbind(pext.CR,pext.EN, pext.VU, pext.NT, pext.LC)
 
   pext.obj.sample <- NULL
@@ -146,9 +148,13 @@ get_extinction_prob <- function(table, verbose = T){
                   msg = "Calculating extinction probabilites...")
     }
     cat.i <- table$RL.cat[table$species==sp]
-    if(cat.i =="NE"){pext.i <- runif(1,0.0001, 0.9999)}else
-      if(cat.i =="EX"){
+    if(cat.i %in% c("NE", "DD")){pext.i <- runif(1,0.0001, 0.9999)
+    }else if(cat.i =="EX"){
         cat.i =="CR"
+      }else if(cat.i =="EW"){
+        cat.i =="CR"
+      }else if(cat.i =="CD"){
+        cat.i =="NT"
       }else{
         pext.i <- sample(cat_pext_table$pext[cat_pext_table$RL.cat==cat.i], size = 1)
       }

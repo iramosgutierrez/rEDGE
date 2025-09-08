@@ -20,16 +20,17 @@ calculate_EDGE1 <- function(tree,
   }
 
 
-  if(!all(table$RL.cat %in% cat_pext()$rl.cat )){
-    stop("Categories should be: ", paste0(cat_pext()$rl.cat, collapse = " "))
+  if(!all(table$RL.cat %in% c(cat_pext()$rl.cat, "CD", "NE", "DD", "EW") )){
+    stop("Categories should be: ", paste0(c(cat_pext()$rl.cat, "CD", "NE", "DD", "EW"), collapse = " "))
   }
 
   table$pext[table$RL.cat == "LC"] <- 0
   table$pext[table$RL.cat == "NT"] <- 1
+  table$pext[table$RL.cat == "CD"] <- 1
   table$pext[table$RL.cat == "VU"] <- 2
   table$pext[table$RL.cat == "EN"] <- 3
   table$pext[table$RL.cat == "CR"] <- 4
-
+  table$pext[table$RL.cat == "EW"] <- 4
 
   ED <- suppressWarnings(caper::ed.calc(tree))
   ED_res <- ED$spp

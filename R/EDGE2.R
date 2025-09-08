@@ -14,10 +14,11 @@ reorder_tree <- function(tree, ordering){
 #' EDGE2 calculating function.
 #'
 #' @param verbose Logical. Should progress be printed or not.
+#' @param return.all Logical. If TRUE, an EDGE list, tree and ePDloss list is returned. If FALSE (default), only the list is returned.
 #'
 #' @inheritParams calculate_EDGE1
 #'
-#' @returns A list containing 3 slots.
+#' @returns A list containing 3 slots if `return.all` is TRUE. If not, only the first item (EDGE list) will be returned.
 #' \itemize{
 #'  \item{list: }{will output specific TBL (terminal branch length), pext (sampled probability of extinction), ED (evolutionary distinctiveness), and EDGE (EDGE index).}
 #'  \item{tree: }{the input tree.}
@@ -30,8 +31,9 @@ reorder_tree <- function(tree, ordering){
 #'
 calculate_EDGE2 <- function(tree,
                             table,
-                            verbose = T,
-                            sort.list = FALSE){
+                            verbose = TRUE,
+                            sort.list  = FALSE,
+                            return.all = FALSE){
 
 
   table <- get_extinction_prob(table, verbose = verbose)
@@ -64,6 +66,7 @@ calculate_EDGE2 <- function(tree,
 
   ePD.dat <- data.frame(PD = sum(tree$edge.length),ePDloss = NA)
 
+  suppressMessages(require(phylobase))
   tree <- as(tree, "phylo4")
   root <- phylobase::rootNode(tree)
   nodes <- c(root, phylobase::descendants(tree, root, "all"))
@@ -119,9 +122,12 @@ calculate_EDGE2 <- function(tree,
 
 
 
+  if(isTRUE(return.all)){
   edge.res <- list("list" = tree_dat, "tree" = tree, "ePDloss" = ePD.dat)
-
   return(edge.res)
+  }else{
+  return(tree_dat)
+  }
 }
 
 
@@ -143,21 +149,30 @@ calculate_EDGE2_multiple <- function(tree,
                             table,
                             verbose = T,
                             sort.list = FALSE,
+                            return.all = FALSE,
                             n.iter = 100,
                             parallelize = FALSE,
                             n.cores = NULL){
 
 
   if(isTRUE(parallelize)){
-  stop("Parallelization is not implemented yet. Sorry for the inconvenience")
-  #   n.cores <- future::availableCores()-1
-  #   future::plan(multisession, workers = n.cores)
-  #
-  #   future.apply::future_lapply(1:n.iter,FUN = calculate_EDGE2,
-  #                                      tree = tree, table = table, sort.list = T, verbose = T)
+    if(is.null(n.cores)){
+     n.cores <- future::availableCores()-1
+    }
+    if(isTRUE(n.cores > future::availableCores())){
+      message(paste0("n.cores value greater than available. Setting maximum-1 (", future::availableCores()-1, ")"))
+      n.cores <- future::availableCores()-1
+    }
+
+
+    future::plan(future::multisession, workers = n.cores)
+
+    EDGElist <- future.apply::future_lapply(1:n.iter,FUN = calculate_EDGE2,
+                                       tree = tree, table = table, sort.list = T, return.all = return.all)
+    future::plan(future::sequential)
   }else{
     EDGElist <- lapply(1:n.iter,FUN = calculate_EDGE2,
-                       tree = tree, table = table, sort.list = T)
+                       tree = tree, table = table, sort.list = T, return.all = return.all)
   }
 
  return(EDGElist)

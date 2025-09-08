@@ -13,6 +13,7 @@ LazyData: true
 RoxygenNote: 7.3.2
 Imports:
     phylobase,
-    caper
+    caper,
+    future.apply
 Depends: 
     R (>= 2.10)

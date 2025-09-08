@@ -4,7 +4,13 @@
 \alias{calculate_EDGE2}
 \title{EDGE2 calculating function.}
 \usage{
-calculate_EDGE2(tree, table, verbose = T, sort.list = FALSE)
+calculate_EDGE2(
+  tree,
+  table,
+  verbose = T,
+  sort.list = FALSE,
+  return.all = FALSE
+)
 }
 \arguments{
 \item{tree}{a phylo object.}
@@ -14,9 +20,11 @@ calculate_EDGE2(tree, table, verbose = T, sort.list = FALSE)
 \item{verbose}{Logical. Should progress be printed or not.}
 
 \item{sort.list}{Logical. If TRUE, the EDGE list will be sorted from higher to lower values.}
+
+\item{return.all}{Logical. If TRUE, an EDGE list, tree and ePDloss list is returned. If FALSE (default), only the list is returned.}
 }
 \value{
-A list containing 3 slots.
+A list containing 3 slots if `return.all` is TRUE. If not, only the first item (EDGE list) will be returned.
 \itemize{
  \item{list: }{will output specific TBL (terminal branch length), pext (sampled probability of extinction), ED (evolutionary distinctiveness), and EDGE (EDGE index).}
  \item{tree: }{the input tree.}
