@@ -123,3 +123,34 @@ calculate_EDGE2 <- function(tree,
 
   return(edge.res)
 }
+
+
+
+# calculate_EDGE2_multiple <- function(tree,
+#                             table,
+#                             verbose = T,
+#                             sort.list = FALSE,
+#                             n.iter = 100,
+#                             parallelize = FALSE,
+#                             n.cores = NULL){
+#
+#
+#   if(is TRUE(parallelize)){
+#     n.cores <- future::availableCores()-1
+#     future::plan(multisession, workers = n.cores)
+#
+#     future.apply::future_lapply(1:n.iter,FUN = calculate_EDGE2,
+#                                        tree = tree, table = table, sort.list = T, verbose = T)
+#   }else{
+#     EDGElist <- lapply(1:n.iter,FUN = calculate_EDGE2_individual,
+#                        tree = tree, table = table, sort.list = T, verbose = T)
+#   }
+#
+#  return(EDGElist)
+#
+# }
+
+
+
+
+

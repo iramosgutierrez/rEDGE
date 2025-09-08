@@ -3,8 +3,8 @@ Type: Package
 Title: Evolutionarily Distinct and Globally Endangered calculator
 Version: 0.1.0
 Authors@R: 
-  c(person("Ignacio", "Ramos-Gutierrez", "ig.ramosgutierrez@gmail.com", role = c("aut", "cph"),
-    comment = c(ORCID = "0000-0002-8675-0114"))
+  c(person("Ignacio", "Ramos-Gutierrez", "ig.ramosgutierrez@gmail.com", role = c("aut", "cre", "cph"),
+    comment = c(ORCID = "0000-0002-8675-0114")),
   )
 Description: EDGE metric calculator
 License: CC0
