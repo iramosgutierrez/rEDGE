@@ -24,6 +24,7 @@ calculate_EDGE1 <- function(tree,
     stop("Categories should be: ", paste0(c(cat_pext()$rl.cat, "CD", "NE", "DD", "EW"), collapse = " "))
   }
 
+  table$pext <- NA_integer_
   table$pext[table$RL.cat == "LC"] <- 0
   table$pext[table$RL.cat == "NT"] <- 1
   table$pext[table$RL.cat == "CD"] <- 1
