@@ -66,7 +66,7 @@ calculate_EDGE2 <- function(tree,
 
   ePD.dat <- data.frame(PD = sum(tree$edge.length),ePDloss = NA)
 
-  suppressMessages(require(phylobase))
+  suppressWarnings(suppressMessages(require(phylobase)))
   tree <- as(tree, "phylo4")
   root <- phylobase::rootNode(tree)
   nodes <- c(root, phylobase::descendants(tree, root, "all"))
