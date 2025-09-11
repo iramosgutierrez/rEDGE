@@ -123,10 +123,7 @@ create_pext_by_cat <- function(n = 1000000){
 
 
 
-#' Probability of Extinction
-#'
-#'
-#'
+
 get_extinction_prob <- function(table, verbose = T){
 
   if(!inherits(table, c("data.frame", "tibble"))){
