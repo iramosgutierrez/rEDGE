@@ -19,3 +19,8 @@ a data frame with the input table and the EDGE metric (sensu  Isaac et al., 2007
 \description{
 Calculate EDGE index
 }
+\references{
+Isaac, N.J., Turvey, S.T., Collen, B., Waterman, C. & Baillie, J.E. (2007)
+Mammals on the EDGE: conservation priorities based on threat and phylogeny. PLoS ONE 2: e296.
+\url{https://doi.org/10.1371/journal.pone.0000296}
+}

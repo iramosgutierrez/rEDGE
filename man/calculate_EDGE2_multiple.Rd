@@ -9,6 +9,7 @@ calculate_EDGE2_multiple(
   table,
   verbose = T,
   sort.list = FALSE,
+  return.all = FALSE,
   n.iter = 100,
   parallelize = FALSE,
   n.cores = NULL
@@ -22,6 +23,8 @@ calculate_EDGE2_multiple(
 \item{verbose}{Logical. Should progress be printed or not.}
 
 \item{sort.list}{Logical. If TRUE, the EDGE list will be sorted from higher to lower values.}
+
+\item{return.all}{Logical. If TRUE, an EDGE list, tree and ePDloss list is returned. If FALSE (default), only the list is returned.}
 
 \item{n.iter}{Integer. Number of times the function will be run.}
 

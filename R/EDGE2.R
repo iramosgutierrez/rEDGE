@@ -24,6 +24,12 @@ reorder_tree <- function(tree, ordering){
 #'  \item{tree: }{the input tree.}
 #'  \item{ePDloss: }{complete PD (phylogenetic diversity) and ePDloss (expected PD loss). Units are as in the input tree  (generally Million years).}
 #' }
+#' @references Gumbs, R., Gray, C. L., Böhm, M., Burfield, I. J., Couchman, O. R., Faith, D. P.,
+#' Forest, F., Hoffmann, M., #' Isaac, N. J. B., Jetz, W., Mace, G. M., Mooers, A. O., Safi, K.,
+#' Scott, O., Steel, M., Tucker, C. M., Pearse, W. D., Owen, N. R. & Rosindell, J. (2023).
+#' The EDGE2 protocol: Advancing the prioritisation of Evolutionarily Distinct and Globally Endangered species for
+#' practical conservation action. PLoS Biology, 21(2), e3001991.
+#' \url{https://doi.org/10.1371/journal.pbio.3001991}
 #'
 #' @author I. Ramos-Gutiérrez, R. Gumbs
 #'
