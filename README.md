@@ -1,9 +1,9 @@
 
-<img src="man/figures/EDGEcalc_logo.png" width="140px" align="right"/>
-
 # EDGEcalc
 
 Package to calculate EDGE scores
+
+<img src="man/figures/EDGEcalc_logo.png" width="140px" align="right"/>
 
 Documentation of website under current development…
 
