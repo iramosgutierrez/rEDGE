@@ -117,11 +117,18 @@ calculate_EDGE2 <- function(tree,
   }
 
   tree_dat$ED <- tree_dat$EDGE / tree_dat$pext
+
+  # Not tested: copied and modif. EDGE1
+  # EDGEmedian <- median(tree_dat$ED)
+  # tree_dat$EDGEspp <- "N"
+  # tree_dat$EDGEspp[tree_dat$EDGE > EDGEmedian & tree_dat$RL.cat %in% c("VU", "EN", "CR", "EW")]
+
   # reorder tree
   tree <- reorder_tree(tree, order(ord))
 
   if(isTRUE(sort.list)){
     tree_dat <- tree_dat[order(tree_dat$EDGE, decreasing = T),]
+    rownames(tree_dat) <- as.character(1:nrow(tree_dat))
   }
   tree <- as(tree, "phylo")
   ePD.dat$ePDloss <- sum(tree$edge.length)

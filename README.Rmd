@@ -92,6 +92,8 @@ EDGE2mult <- calculate_EDGE2_multiple(tree = monotreme.tree,
                                       n.cores = 10
                                       )
 
+
+# Now we summarise table results...
 EDGE2mult_summ <- EDGE2mult |> 
   bind_rows()  |> 
   group_by(species) |> 
