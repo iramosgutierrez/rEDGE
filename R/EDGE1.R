@@ -15,7 +15,7 @@ calculate_EDGE1 <- function(tree,
                             sort.list = FALSE){
 
   if(!all(tree$tip.label %in% table$species )){
-    stop("Some species in 'tree$tip.label' are not included in 'table$species'")
+    warning("Some species in 'tree$tip.label' are not included in 'table$species'")
   }
 
   if(!all(table$species %in% tree$tip.label )){
@@ -43,11 +43,16 @@ calculate_EDGE1 <- function(tree,
 
   table$EDGE <- log(1+table$ED) + table$pext*(log(2))
 
-   table <- table[,-which(colnames(table) == "pext")]
+  table <- table[,-which(colnames(table) == "pext")]
 
    if(isTRUE(sort.list)){
      table <- table[order(table$EDGE, decreasing = T),]
+     rownames(table) <- 1:nrow(table)
    }
+
+   # EDmedian <- median(table$ED)
+   # table$EDGEspp <- "N"
+   # table$EDGEspp[table$ED > EDmedian & table$RL.cat %in% c("VU", "EN", "CR", "EW")]
 
    return(table)
 }
