@@ -136,7 +136,7 @@ get_extinction_prob <- function(table, verbose = T){
 
   cat_pext_table <- create_pext_by_cat()
 
-
+  table$pext <- NA
   for(sp in table$species){
 
     if(isTRUE(verbose)){
