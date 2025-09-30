@@ -12,7 +12,8 @@ calculate_EDGE2_multiple(
   return.all = FALSE,
   n.iter = 100,
   parallelize = FALSE,
-  n.cores = NULL
+  n.cores = NULL,
+  seed = NULL
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ calculate_EDGE2_multiple(
 \item{parallelize}{Logical. If TRUE, several CPU cores will be used to compute EDGE scores.}
 
 \item{n.cores}{Integer. Number of cores to use simultaneoulsly. Default is the number of available ones minus one.}
+
+\item{seed}{Integer. seed number used to randomize iterations. if NULL, a random number will be enerated and printed}
 }
 \value{
 A list of length = n.iter

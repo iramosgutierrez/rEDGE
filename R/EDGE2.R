@@ -149,6 +149,7 @@ calculate_EDGE2 <- function(tree,
 #' @param n.iter Integer. Number of times the function will be run.
 #' @param parallelize Logical. If TRUE, several CPU cores will be used to compute EDGE scores.
 #' @param n.cores Integer. Number of cores to use simultaneoulsly. Default is the number of available ones minus one.
+#' @param seed Integer. seed number used to randomize iterations. if NULL, a random number will be enerated and printed
 #'
 #' @inheritParams calculate_EDGE2
 #'
@@ -165,9 +166,16 @@ calculate_EDGE2_multiple <- function(tree,
                             return.all = FALSE,
                             n.iter = 100,
                             parallelize = FALSE,
-                            n.cores = NULL){
+                            n.cores = NULL,
+                            seed = NULL){
 
 
+  if(is.null(seed)){
+    seed <- round(runif(1, 1, 999999999))
+    print(paste0("Seed has been set to: ", seed))
+    set.seed(seed)
+
+  }
   if(isTRUE(parallelize)){
     if(is.null(n.cores)){
      n.cores <- future::availableCores()-1
