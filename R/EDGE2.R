@@ -164,7 +164,7 @@ calculate_EDGE2_multiple <- function(tree,
                             verbose = T,
                             sort.list = FALSE,
                             return.all = FALSE,
-                            n.iter = 100,
+                            n.iter = 10,
                             parallelize = FALSE,
                             n.cores = NULL,
                             seed = NULL){

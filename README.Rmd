@@ -19,8 +19,8 @@ devtools::load_all()
 ```
 
 
-# EDGEcalc
-Package to calculate EDGE scores
+# rEDGE
+Package to calculate EDGE scores and more phylogenetic-based indicators in R
 
 <img src="man/figures/EDGEcalc_logo.png" width="140px" align="right"/>
 
@@ -30,9 +30,9 @@ Documentation of website under current development...
 
 ## The EDGE index
 
-The EDGE index is a metrric that aims to prioritize species' conservation bsed on both theis phylogenetic singularity (i.e. ED, Evolutionaty Distinctiveness) and their extinction risk (GE, Globally Endangered). Based on this idea, several methods have been developed in order to calculate individual EDGE scores.
+The EDGE index is a metric that aims to prioritize species' conservation bsed on both theis phylogenetic singularity (i.e. ED, Evolutionaty Distinctiveness) and their extinction risk (GE, Globally Endangered). Based on this idea, several methods have been developed in order to calculate individual EDGE scores.
 
-To illustrate the differences among methods ant their implementationn within `EDGEcalc` package, we will see some examples using monotremates (i.e. platypus and echidna species).
+To illustrate the differences among methods ant their implementationn within `rEDGE` package, we will see some examples using monotremates (i.e. platypus and echidna species).
 
 ```{r, include=T, echo=F, out.width="50%"}
 t2 <- monotreme.tree
@@ -85,6 +85,7 @@ As this EDGE score is iteration dependant (i.e. there is a random factor in the 
 
 
 ```{r EDGE2mult, message=F, warning=F}
+
 EDGE2mult <- calculate_EDGE2_multiple(tree = monotreme.tree, 
                                       table = monotreme.table, 
                                       n.iter = 50,

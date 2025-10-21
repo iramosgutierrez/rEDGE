@@ -1,7 +1,8 @@
 
-# EDGEcalc
+# rEDGE
 
-Package to calculate EDGE scores
+Package to calculate EDGE scores and more phylogenetic-based indicators
+in R
 
 <img src="man/figures/EDGEcalc_logo.png" width="140px" align="right"/>
 
@@ -9,14 +10,14 @@ Documentation of website under current development…
 
 ## The EDGE index
 
-The EDGE index is a metrric that aims to prioritize species’
-conservation bsed on both theis phylogenetic singularity (i.e. ED,
-Evolutionaty Distinctiveness) and their extinction risk (GE, Globally
-Endangered). Based on this idea, several methods have been developed in
-order to calculate individual EDGE scores.
+The EDGE index is a metric that aims to prioritize species’ conservation
+bsed on both theis phylogenetic singularity (i.e. ED, Evolutionaty
+Distinctiveness) and their extinction risk (GE, Globally Endangered).
+Based on this idea, several methods have been developed in order to
+calculate individual EDGE scores.
 
 To illustrate the differences among methods ant their implementationn
-within `EDGEcalc` package, we will see some examples using monotremates
+within `rEDGE` package, we will see some examples using monotremates
 (i.e. platypus and echidna species).
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="50%" />
@@ -77,13 +78,13 @@ EDGE2 <- calculate_EDGE2(tree = monotreme.tree,
 knitr::kable(EDGE2)
 ```
 
-| species                  | RL.cat |       TBL |      pext |       ED |      EDGE |
-|:-------------------------|:-------|----------:|----------:|---------:|----------:|
-| Zaglossus_attenboroughi  | CR     |  8.147095 | 0.9999000 | 10.04794 | 10.046936 |
-| Zaglossus_bruijnii       | CR     |  8.147095 | 0.9171574 | 10.21943 |  9.372824 |
-| Ornithorhynchus_anatinus | NT     | 29.832422 | 0.1687944 | 29.83242 |  5.035546 |
-| Zaglossus_bartoni        | VU     |  9.177698 | 0.1877049 | 14.26826 |  2.678222 |
-| Tachyglossus_aculeatus   | LC     | 14.111567 | 0.0392506 | 16.81772 |  0.660106 |
+| species                  | RL.cat |       TBL |      pext |       ED |     EDGE |
+|:-------------------------|:-------|----------:|----------:|---------:|---------:|
+| Zaglossus_bruijnii       | CR     |  8.147095 | 0.9497124 | 10.01547 | 9.511817 |
+| Zaglossus_attenboroughi  | CR     |  8.147095 | 0.8131539 | 10.32924 | 8.399262 |
+| Ornithorhynchus_anatinus | NT     | 29.832422 | 0.1343554 | 29.83242 | 4.008146 |
+| Zaglossus_bartoni        | VU     |  9.177698 | 0.1996272 | 14.07945 | 2.810640 |
+| Tachyglossus_aculeatus   | LC     | 14.111567 | 0.0899053 | 16.53517 | 1.486599 |
 
 As this EDGE score is iteration dependant (i.e. there is a random factor
 in the sampling of extinction probabilty), a set of EDGE2 values can be
@@ -93,12 +94,14 @@ parallelize in order to speed computation times. In this example we are
 calculating EDGE scores 50 times and averaging the results after.
 
 ``` r
+
 EDGE2mult <- calculate_EDGE2_multiple(tree = monotreme.tree, 
                                       table = monotreme.table, 
                                       n.iter = 50,
                                       parallelize = TRUE,
                                       n.cores = 10
                                       )
+#> [1] "Seed has been set to: 648513177"
 
 
 # Now we summarise table results...
@@ -115,10 +118,10 @@ EDGE2mult_summ <- EDGE2mult |>
 knitr::kable(EDGE2mult_summ)
 ```
 
-| species                  | RL.cat |       TBL |      pext |       ED |     EDGE |
-|:-------------------------|:-------|----------:|----------:|---------:|---------:|
-| Zaglossus_attenboroughi  | CR     |  8.147095 | 0.9273618 | 10.40279 | 9.649261 |
-| Zaglossus_bruijnii       | CR     |  8.147095 | 0.9097102 | 10.45443 | 9.505452 |
-| Ornithorhynchus_anatinus | NT     | 29.832422 | 0.1275892 | 29.83242 | 3.806294 |
-| Zaglossus_bartoni        | VU     |  9.177698 | 0.2476138 | 14.14125 | 3.497165 |
-| Tachyglossus_aculeatus   | LC     | 14.111567 | 0.0612510 | 17.39483 | 1.058562 |
+| species                  | RL.cat |       TBL |      pext |       ED |      EDGE |
+|:-------------------------|:-------|----------:|----------:|---------:|----------:|
+| Zaglossus_bruijnii       | CR     |  8.147095 | 0.9185442 | 10.35112 | 9.5038608 |
+| Zaglossus_attenboroughi  | CR     |  8.147095 | 0.9090575 | 10.37135 | 9.4265718 |
+| Ornithorhynchus_anatinus | NT     | 29.832422 | 0.1269873 | 29.83242 | 3.7883378 |
+| Zaglossus_bartoni        | VU     |  9.177698 | 0.2381222 | 14.03218 | 3.3476776 |
+| Tachyglossus_aculeatus   | LC     | 14.111567 | 0.0579727 | 17.24956 | 0.9955156 |

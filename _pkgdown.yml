@@ -1,0 +1,16 @@
+url: https://github.com/iramosgutierrez/rEDGE
+template:
+  bootstrap: 5
+  bootswatch: minty
+reference:
+- title: Functions
+  contents:
+  - calculate_EDGE1
+  - calculate_EDGE2
+  - calculate_EDGE2_multiple
+
+- title: Example data
+  contents:
+  - monotreme.table
+  - monotreme.tree
+
