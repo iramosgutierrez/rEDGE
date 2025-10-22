@@ -78,13 +78,13 @@ EDGE2 <- calculate_EDGE2(tree = monotreme.tree,
 knitr::kable(EDGE2)
 ```
 
-| species                  | RL.cat |       TBL |      pext |       ED |       EDGE |
-|:-------------------------|:-------|----------:|----------:|---------:|-----------:|
-| Zaglossus_bruijnii       | CR     |  8.147095 | 0.9999000 | 10.69954 | 10.6984729 |
-| Zaglossus_attenboroughi  | CR     |  8.147095 | 0.9905879 | 10.72354 | 10.6226066 |
-| Ornithorhynchus_anatinus | NT     | 29.832422 | 0.1496076 | 29.83242 |  4.4631576 |
-| Zaglossus_bartoni        | VU     |  9.177698 | 0.2818624 | 14.61081 |  4.1182375 |
-| Tachyglossus_aculeatus   | LC     | 14.111567 | 0.0350753 | 18.50054 |  0.6489122 |
+| species                  | RL.cat |       TBL |      pext |       ED |      EDGE |
+|:-------------------------|:-------|----------:|----------:|---------:|----------:|
+| Zaglossus_attenboroughi  | CR     |  8.147095 | 0.9999000 | 10.43494 | 10.433897 |
+| Zaglossus_bruijnii       | CR     |  8.147095 | 0.9999000 | 10.43494 | 10.433897 |
+| Ornithorhynchus_anatinus | NT     | 29.832422 | 0.1661908 | 29.83242 |  4.957875 |
+| Zaglossus_bartoni        | VU     |  9.177698 | 0.2003866 | 15.45166 |  3.096305 |
+| Tachyglossus_aculeatus   | LC     | 14.111567 | 0.0853227 | 17.26119 |  1.472770 |
 
 As this EDGE score is iteration dependant (i.e. there is a random factor
 in the sampling of extinction probabilty), a set of EDGE2 values can be
@@ -101,7 +101,7 @@ EDGE2mult <- calculate_EDGE2_multiple(tree = monotreme.tree,
                                       parallelize = TRUE,
                                       n.cores = 10
                                       )
-#> [1] "Seed has been set to: 39380337"
+#> [1] "Seed has been set to: 74593047"
 
 
 # Now we summarise table results...
@@ -118,10 +118,10 @@ EDGE2mult_summ <- EDGE2mult |>
 knitr::kable(EDGE2mult_summ)
 ```
 
-| species                  | RL.cat |       TBL |      pext |       ED |      EDGE |
-|:-------------------------|:-------|----------:|----------:|---------:|----------:|
-| Zaglossus_bruijnii       | CR     |  8.147095 | 0.9240231 | 10.34608 | 9.5572687 |
-| Zaglossus_attenboroughi  | CR     |  8.147095 | 0.9180105 | 10.35906 | 9.5082837 |
-| Ornithorhynchus_anatinus | NT     | 29.832422 | 0.1284080 | 29.83242 | 3.8307210 |
-| Zaglossus_bartoni        | VU     |  9.177698 | 0.2408466 | 14.02165 | 3.3645653 |
-| Tachyglossus_aculeatus   | LC     | 14.111567 | 0.0493775 | 17.30895 | 0.8474662 |
+| species                  | RL.cat |       TBL |      pext |       ED |     EDGE |
+|:-------------------------|:-------|----------:|----------:|---------:|---------:|
+| Zaglossus_attenboroughi  | CR     |  8.147095 | 0.9127187 | 10.33977 | 9.441899 |
+| Zaglossus_bruijnii       | CR     |  8.147095 | 0.8996084 | 10.37114 | 9.335088 |
+| Ornithorhynchus_anatinus | NT     | 29.832422 | 0.1246440 | 29.83242 | 3.718433 |
+| Zaglossus_bartoni        | VU     |  9.177698 | 0.2413737 | 13.95772 | 3.373585 |
+| Tachyglossus_aculeatus   | LC     | 14.111567 | 0.0563593 | 17.24589 | 0.969964 |
