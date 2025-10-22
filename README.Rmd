@@ -22,7 +22,7 @@ devtools::load_all()
 # rEDGE
 Package to calculate EDGE scores and more phylogenetic-based indicators in R
 
-<img src="man/figures/EDGEcalc_logo.png" width="140px" align="right"/>
+<img src="man/figures/rEDGE_logo.png" width="140px" align="right"/>
 
 
 Documentation of website under current development...

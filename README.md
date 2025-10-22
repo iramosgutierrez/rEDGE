@@ -4,7 +4,7 @@
 Package to calculate EDGE scores and more phylogenetic-based indicators
 in R
 
-<img src="man/figures/EDGEcalc_logo.png" width="140px" align="right"/>
+<img src="man/figures/rEDGE_logo.png" width="140px" align="right"/>
 
 Documentation of website under current development…
 
@@ -78,13 +78,13 @@ EDGE2 <- calculate_EDGE2(tree = monotreme.tree,
 knitr::kable(EDGE2)
 ```
 
-| species                  | RL.cat |       TBL |      pext |       ED |     EDGE |
-|:-------------------------|:-------|----------:|----------:|---------:|---------:|
-| Zaglossus_bruijnii       | CR     |  8.147095 | 0.9497124 | 10.01547 | 9.511817 |
-| Zaglossus_attenboroughi  | CR     |  8.147095 | 0.8131539 | 10.32924 | 8.399262 |
-| Ornithorhynchus_anatinus | NT     | 29.832422 | 0.1343554 | 29.83242 | 4.008146 |
-| Zaglossus_bartoni        | VU     |  9.177698 | 0.1996272 | 14.07945 | 2.810640 |
-| Tachyglossus_aculeatus   | LC     | 14.111567 | 0.0899053 | 16.53517 | 1.486599 |
+| species                  | RL.cat |       TBL |      pext |       ED |       EDGE |
+|:-------------------------|:-------|----------:|----------:|---------:|-----------:|
+| Zaglossus_bruijnii       | CR     |  8.147095 | 0.9999000 | 10.69954 | 10.6984729 |
+| Zaglossus_attenboroughi  | CR     |  8.147095 | 0.9905879 | 10.72354 | 10.6226066 |
+| Ornithorhynchus_anatinus | NT     | 29.832422 | 0.1496076 | 29.83242 |  4.4631576 |
+| Zaglossus_bartoni        | VU     |  9.177698 | 0.2818624 | 14.61081 |  4.1182375 |
+| Tachyglossus_aculeatus   | LC     | 14.111567 | 0.0350753 | 18.50054 |  0.6489122 |
 
 As this EDGE score is iteration dependant (i.e. there is a random factor
 in the sampling of extinction probabilty), a set of EDGE2 values can be
@@ -101,7 +101,7 @@ EDGE2mult <- calculate_EDGE2_multiple(tree = monotreme.tree,
                                       parallelize = TRUE,
                                       n.cores = 10
                                       )
-#> [1] "Seed has been set to: 648513177"
+#> [1] "Seed has been set to: 39380337"
 
 
 # Now we summarise table results...
@@ -120,8 +120,8 @@ knitr::kable(EDGE2mult_summ)
 
 | species                  | RL.cat |       TBL |      pext |       ED |      EDGE |
 |:-------------------------|:-------|----------:|----------:|---------:|----------:|
-| Zaglossus_bruijnii       | CR     |  8.147095 | 0.9185442 | 10.35112 | 9.5038608 |
-| Zaglossus_attenboroughi  | CR     |  8.147095 | 0.9090575 | 10.37135 | 9.4265718 |
-| Ornithorhynchus_anatinus | NT     | 29.832422 | 0.1269873 | 29.83242 | 3.7883378 |
-| Zaglossus_bartoni        | VU     |  9.177698 | 0.2381222 | 14.03218 | 3.3476776 |
-| Tachyglossus_aculeatus   | LC     | 14.111567 | 0.0579727 | 17.24956 | 0.9955156 |
+| Zaglossus_bruijnii       | CR     |  8.147095 | 0.9240231 | 10.34608 | 9.5572687 |
+| Zaglossus_attenboroughi  | CR     |  8.147095 | 0.9180105 | 10.35906 | 9.5082837 |
+| Ornithorhynchus_anatinus | NT     | 29.832422 | 0.1284080 | 29.83242 | 3.8307210 |
+| Zaglossus_bartoni        | VU     |  9.177698 | 0.2408466 | 14.02165 | 3.3645653 |
+| Tachyglossus_aculeatus   | LC     | 14.111567 | 0.0493775 | 17.30895 | 0.8474662 |
