@@ -10,6 +10,7 @@ calculate_EDGE2_multiple(
   verbose = T,
   sort.list = FALSE,
   return.all = FALSE,
+  summarise = TRUE,
   n.iter = 10,
   parallelize = FALSE,
   n.cores = NULL,
@@ -26,6 +27,8 @@ calculate_EDGE2_multiple(
 \item{sort.list}{Logical. If TRUE, the EDGE list will be sorted from higher to lower values.}
 
 \item{return.all}{Logical. If TRUE, an EDGE list, tree and ePDloss list is returned. If FALSE (default), only the list is returned.}
+
+\item{summarise}{Logical. IF TRUE (default), median and IQR values across iterations will be summarise. Only applicable when return.all is FALSE.}
 
 \item{n.iter}{Integer. Number of times the function will be run.}
 

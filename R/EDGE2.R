@@ -150,6 +150,7 @@ calculate_EDGE2 <- function(tree,
 #' @param parallelize Logical. If TRUE, several CPU cores will be used to compute EDGE scores.
 #' @param n.cores Integer. Number of cores to use simultaneoulsly. Default is the number of available ones minus one.
 #' @param seed Integer. seed number used to randomize iterations. if NULL, a random number will be enerated and printed
+#' @param summarise Logical. IF TRUE (default), median and IQR values across iterations will be summarise. Only applicable when return.all is FALSE.
 #'
 #' @inheritParams calculate_EDGE2
 #'
@@ -164,6 +165,7 @@ calculate_EDGE2_multiple <- function(tree,
                             verbose = T,
                             sort.list = FALSE,
                             return.all = FALSE,
+                            summarise = TRUE,
                             n.iter = 10,
                             parallelize = FALSE,
                             n.cores = NULL,
@@ -196,11 +198,52 @@ calculate_EDGE2_multiple <- function(tree,
                        tree = tree, table = table, sort.list = T, return.all = return.all)
   }
 
- return(EDGElist)
+ if (isFALSE(return.all) & isTRUE(summarise)){
+
+   EDGElist_compl <- dplyr::bind_rows(EDGElist) |>
+     dplyr::group_by(species) |>
+     dplyr::summarise(RL.cat = unique(RL.cat),
+
+                      TBLmed = unique(TBL),
+
+                      pextmed = median(pext),
+                      pextiqr = IQR(pext),
+
+                      EDmed = median(ED),
+                      EDiqr = IQR(ED),
+
+                      EDGEmed = median(EDGE),
+                      EDGEiqr = IQR(EDGE)
+                      )
+ }else{
+   EDGElist_compl <- EDGElist
+ }
+ return(EDGElist_compl)
 
 }
 
 
 
+#' Calculate EDGE wrapping function
+
+#' @param method Method to be used. It has to be either "EDGE1" or "EDGE2".
+#' The output will be the result of running calculate_EDGE1, or calculate_EDGE2 depending on the method specified.
+#' @inheritParams calculate_EDGE2
+#'
+#' @export
+#'
+calculate_EDGE <- function(tree, table, method = "EDGE2", ...){
+
+  if(!method %in% c("EDGE1", "EDGE2")){
+    stop("'method' argument has to be \"EDGE1\" or \"EDGE2\"")
+    }
+
+  if(method == "EDGE1"){
+    result <- calculate_EDGE1(tree, table, ...)
+  }else if(method == "EDGE2"){
+    result <- calculate_EDGE2_multiple(tree, table, ...)
+  }
+  return(result)
+}
 
 

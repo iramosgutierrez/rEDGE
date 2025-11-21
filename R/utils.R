@@ -160,3 +160,6 @@ get_extinction_prob <- function(table, verbose = T){
 }
 
 
+IQR <- function(x){ #Inter-quartilic range
+  return(stats::quantile(x, 0.75) - stats::quantile(x, 0.25))
+}
