@@ -59,7 +59,6 @@ calculate_EDGE_multiple <- function(tree,
 
   }
 
-  parallelize <- FALSE # STILL UNDER CONSTRUCTION; the ... are being troubly
   if(isTRUE(parallelize)){
     if(is.null(n.cores)){
       n.cores <- future::availableCores()-1
@@ -169,16 +168,14 @@ calculate_EDGE_multiphylo <- function(multiphylo,
 
     future::plan(future::multisession, workers = n.cores)
 
-    calculate_EDGE_par <- function(tree, ...){calculate_EDGE(tree, ...)}
     EDGElist <- future.apply::future_lapply(multiphylo,
-                                            calculate_EDGE_par,
+                                            calculate_EDGE,
                                             table = table,
                                             method = method,
                                             ext.prob = ext.prob,
                                             sort.list = sort.list,
                                             return.all = return.all,
-                                            verbose = verbose,
-                                            future.envir =  parent.frame(),
+                                            verbose = FALSE,
 
                                             future.seed = seed
     )
