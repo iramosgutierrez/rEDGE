@@ -56,9 +56,31 @@ progressbar <- function (curr.iter, tot.iter, ini.iter = 1, units = "mins",
 
 
 
-cat_pext <- function(){
+cat_pext <- function(ext.prob){
+  if(!ext.prob %in% c("Isaac", "IUCN50", "IUCN100", "IUCN500")){
+    stop("ext.prob should be one of: 'Isaac' / 'IUCN50' / 'IUCN100' / 'IUCN500'")
+    }
+
+  if(ext.prob == "Isaac"){
   cat.pext <- data.frame(rl.cat = rev(c("CR", "EN",   "VU",   "NT",   "LC")) ,
                          pext   = rev(c(0.97, 0.97/2, 0.97/4, 0.97/8, 0.97/16)))
+  }
+
+  if(ext.prob == "IUCN50"){
+    cat.pext <- data.frame(rl.cat = rev(c("CR", "EN",  "VU",   "NT",   "LC")) ,
+                           pext   = rev(c(0.97,  0.42,  0.05,   0.004,  0.00005)))
+  }
+
+  if(ext.prob == "IUCN100"){
+    cat.pext <- data.frame(rl.cat = rev(c("CR",  "EN",   "VU",   "NT",   "LC")) ,
+                           pext   = rev(c( 0.999, 0.667,  0.1,    0.01,   0.0001)))
+  }
+
+  if(ext.prob == "IUCN500"){
+    cat.pext <- data.frame(rl.cat = rev(c("CR", "EN",   "VU",   "NT",   "LC")) ,
+                           pext   = rev(c( 1,    0.996,  0.39,   0.02,   0.0005)))
+  }
+
   return(cat.pext)
 }
 
