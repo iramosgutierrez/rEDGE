@@ -7,8 +7,8 @@ rl.data <- data.frame(
 
 tree <- ape::read.tree(text = "((Draco_rheagalii:2.5,Draco_viseryi:2.5):1,Draco_drogon:3.5);")
 
-edge_df <- calculate_EDGE2(tree, rl.data, sort.list = T)
-edge_ls <- calculate_EDGE2(tree, rl.data,return.all = T)
+edge_df <- calculate_EDGE2(tree, rl.data, sort.list = T, ext.prob = "IUCN500")
+edge_ls <- calculate_EDGE2(tree, rl.data,return.all = T, ext.prob = "IUCN50")
 
 test_that("Testing EDGE2", {
 

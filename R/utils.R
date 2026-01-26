@@ -56,7 +56,7 @@ progressbar <- function (curr.iter, tot.iter, ini.iter = 1, units = "mins",
 
 
 
-cat_pext <- function(ext.prob){
+cat_pext <- function(ext.prob = "Isaac"){
   if(!ext.prob %in% c("Isaac", "IUCN50", "IUCN100", "IUCN500")){
     stop("ext.prob should be one of: 'Isaac' / 'IUCN50' / 'IUCN100' / 'IUCN500'")
     }
@@ -91,13 +91,13 @@ cat_pext <- function(ext.prob){
 # this distribution of GE2 is then used to derive the GE2 for each species for each iteration of EDGE2 calculation
 # a random value of GE2, corresponding to the appropriate RL category, can be assigned from the output to each species
 
-create_pext_by_cat <- function(n = 1000000){
+create_pext_by_cat <- function(n = 1000000, ext.prob){
 
   iucn <- sample(1:5, size=n, replace=TRUE) # 1:5 forces to be just 5 categories!
-  data <- data.frame(species=c(1:n), pext=cat_pext()$pext[iucn])
+  data <- data.frame(species=c(1:n), pext=cat_pext(ext.prob)$pext[iucn])
   data <- data[order(data$pext),]
   data$rank <- seq_len(nrow(data))
-  pext <- cat_pext()
+  pext <- cat_pext(ext.prob)
   rank <- c(0, with(data, tapply(rank, pext, median)))
   pext.tap <- c(0, pext$pext)
   rank.sq <- rank^2; rank.cub <- rank^3; rank.qu <- rank^4; rank.quu <- rank^5
@@ -146,7 +146,7 @@ create_pext_by_cat <- function(n = 1000000){
 
 
 
-get_extinction_prob <- function(table, verbose = T){
+get_extinction_prob <- function(table, ext.prob = ext.prob, verbose = T){
 
   if(!inherits(table, c("data.frame", "tibble"))){
     stop("table object should be a tibble or data.frame")
@@ -156,7 +156,7 @@ get_extinction_prob <- function(table, verbose = T){
     stop("Column names of 'table' should be 'species' and RL.cat'")
   }
 
-  cat_pext_table <- create_pext_by_cat()
+  cat_pext_table <- create_pext_by_cat(ext.prob = ext.prob)
 
   table$pext <- NA
   for(sp in table$species){

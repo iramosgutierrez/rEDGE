@@ -15,6 +15,7 @@ reorder_tree <- function(tree, ordering){
 #'
 #' @param verbose Logical. Should progress be printed or not.
 #' @param return.all Logical. If TRUE, an EDGE list, tree and ePDloss list is returned. If FALSE (default), only the list is returned.
+#' @param ext.prob Extinction probability associated to category, based on Isaac et al. (2007) or Mooers et al. (2008).
 #'
 #' @inheritParams calculate_EDGE1
 #'
@@ -24,6 +25,16 @@ reorder_tree <- function(tree, ordering){
 #'  \item{tree: }{the input tree.}
 #'  \item{ePDloss: }{complete PD (phylogenetic diversity) and ePDloss (expected PD loss). Units are as in the input tree  (generally Million years).}
 #' }
+#'
+#' @references Isaac, N.J.B., Turvey, S.T., Collen, B., Waterman, C., Baillie, J.E.M. (2007).
+#' Mammals on the EDGE: Conservation Priorities Based on Threat and Phylogeny. PloS one, 2(3), e296.
+#' \url{https://doi.org/10.1371/journal.pone.0000296}
+#'
+#' @references Mooers, A.Ø., Faith, D. P., & Maddison, W. P. (2008).
+#'  Converting endangered species categories to probabilities of extinction for phylogenetic
+#'  conservation prioritization. PloS one, 3(11), e3700.
+#' \url{https://doi.org/10.1371/journal.pone.0003700}
+#'
 #' @references Gumbs, R., Gray, C. L., Böhm, M., Burfield, I. J., Couchman, O. R., Faith, D. P.,
 #' Forest, F., Hoffmann, M., #' Isaac, N. J. B., Jetz, W., Mace, G. M., Mooers, A. O., Safi, K.,
 #' Scott, O., Steel, M., Tucker, C. M., Pearse, W. D., Owen, N. R. & Rosindell, J. (2023).
@@ -37,16 +48,17 @@ reorder_tree <- function(tree, ordering){
 #'
 calculate_EDGE2 <- function(tree,
                             table,
+                            ext.prob = "Isaac",
                             verbose = TRUE,
                             sort.list  = FALSE,
                             return.all = FALSE){
 
 
-  table <- get_extinction_prob(table, verbose = verbose)
+  table <- get_extinction_prob(table, ext.prob = ext.prob, verbose = verbose)
   names(table) <- c("species", "RL.cat", "pext")
 
   if(isTRUE(verbose)){
-    message("Calculating EDGE2 values")
+    message("Calculating EDGE2 values using ", ext.prob, " extinction probabilities")
   }
   N_species <- length(tree$tip.label)
   N_nodes <- tree$Nnode
@@ -144,106 +156,5 @@ calculate_EDGE2 <- function(tree,
 }
 
 
-#' Multiple iteration EDGE2 calculating function.
-#'
-#' @param n.iter Integer. Number of times the function will be run.
-#' @param parallelize Logical. If TRUE, several CPU cores will be used to compute EDGE scores.
-#' @param n.cores Integer. Number of cores to use simultaneoulsly. Default is the number of available ones minus one.
-#' @param seed Integer. seed number used to randomize iterations. if NULL, a random number will be enerated and printed
-#' @param summarise Logical. IF TRUE (default), median and IQR values across iterations will be summarise. Only applicable when return.all is FALSE.
-#'
-#' @inheritParams calculate_EDGE2
-#'
-#' @returns A list of length = n.iter
-#'
-#' @author I. Ramos-Gutiérrez.
-#'
-#' @export
-#'
-calculate_EDGE2_multiple <- function(tree,
-                            table,
-                            verbose = T,
-                            sort.list = FALSE,
-                            return.all = FALSE,
-                            summarise = TRUE,
-                            n.iter = 10,
-                            parallelize = FALSE,
-                            n.cores = NULL,
-                            seed = NULL){
-
-
-  if(is.null(seed)){
-    seed <- round(runif(1, 1, 999999999))
-    print(paste0("Seed has been set to: ", seed))
-    set.seed(seed)
-
-  }
-  if(isTRUE(parallelize)){
-    if(is.null(n.cores)){
-     n.cores <- future::availableCores()-1
-    }
-    if(isTRUE(n.cores > future::availableCores())){
-      message(paste0("n.cores value greater than available. Setting maximum-1 (", future::availableCores()-1, ")"))
-      n.cores <- future::availableCores()-1
-    }
-
-
-    future::plan(future::multisession, workers = n.cores)
-
-    EDGElist <- future.apply::future_lapply(1:n.iter,FUN = calculate_EDGE2,
-                                       tree = tree, table = table, sort.list = T, return.all = return.all)
-    future::plan(future::sequential)
-  }else{
-    EDGElist <- lapply(1:n.iter,FUN = calculate_EDGE2,
-                       tree = tree, table = table, sort.list = T, return.all = return.all)
-  }
-
- if (isFALSE(return.all) & isTRUE(summarise)){
-
-   EDGElist_compl <- dplyr::bind_rows(EDGElist) |>
-     dplyr::group_by(species) |>
-     dplyr::summarise(RL.cat = unique(RL.cat),
-
-                      TBLmed = unique(TBL),
-
-                      pextmed = median(pext),
-                      pextiqr = IQR(pext),
-
-                      EDmed = median(ED),
-                      EDiqr = IQR(ED),
-
-                      EDGEmed = median(EDGE),
-                      EDGEiqr = IQR(EDGE)
-                      )
- }else{
-   EDGElist_compl <- EDGElist
- }
- return(EDGElist_compl)
-
-}
-
-
-
-#' Calculate EDGE wrapping function
-
-#' @param method Method to be used. It has to be either "EDGE1" or "EDGE2".
-#' The output will be the result of running calculate_EDGE1, or calculate_EDGE2 depending on the method specified.
-#' @inheritParams calculate_EDGE2
-#'
-#' @export
-#'
-calculate_EDGE <- function(tree, table, method = "EDGE2", ...){
-
-  if(!method %in% c("EDGE1", "EDGE2")){
-    stop("'method' argument has to be \"EDGE1\" or \"EDGE2\"")
-    }
-
-  if(method == "EDGE1"){
-    result <- calculate_EDGE1(tree, table, ...)
-  }else if(method == "EDGE2"){
-    result <- calculate_EDGE2_multiple(tree, table, ...)
-  }
-  return(result)
-}
 
 

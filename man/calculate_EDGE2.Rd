@@ -7,6 +7,7 @@
 calculate_EDGE2(
   tree,
   table,
+  ext.prob = "Isaac",
   verbose = TRUE,
   sort.list = FALSE,
   return.all = FALSE
@@ -16,6 +17,8 @@ calculate_EDGE2(
 \item{tree}{a phylo object.}
 
 \item{table}{a tibble or data frame with two columns, named "species" and "RL.cat"}
+
+\item{ext.prob}{Extinction probability associated to category, based on Isaac et al. (2007) or Mooers et al. (2008).}
 
 \item{verbose}{Logical. Should progress be printed or not.}
 
@@ -35,6 +38,15 @@ A list containing 3 slots if `return.all` is TRUE. If not, only the first item (
 EDGE2 calculating function.
 }
 \references{
+Isaac, N.J.B., Turvey, S.T., Collen, B., Waterman, C., Baillie, J.E.M. (2007).
+Mammals on the EDGE: Conservation Priorities Based on Threat and Phylogeny. PloS one, 2(3), e296.
+\url{https://doi.org/10.1371/journal.pone.0000296}
+
+Mooers, A.Ø., Faith, D. P., & Maddison, W. P. (2008).
+ Converting endangered species categories to probabilities of extinction for phylogenetic
+ conservation prioritization. PloS one, 3(11), e3700.
+\url{https://doi.org/10.1371/journal.pone.0003700}
+
 Gumbs, R., Gray, C. L., Böhm, M., Burfield, I. J., Couchman, O. R., Faith, D. P.,
 Forest, F., Hoffmann, M., #' Isaac, N. J. B., Jetz, W., Mace, G. M., Mooers, A. O., Safi, K.,
 Scott, O., Steel, M., Tucker, C. M., Pearse, W. D., Owen, N. R. & Rosindell, J. (2023).
