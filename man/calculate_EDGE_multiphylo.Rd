@@ -14,7 +14,8 @@ calculate_EDGE_multiphylo(
   summarise = TRUE,
   parallelize = FALSE,
   n.cores = NULL,
-  seed = NULL
+  seed = NULL,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -33,6 +34,8 @@ calculate_EDGE_multiphylo(
 \item{n.cores}{Integer. Number of cores to use simultaneoulsly. Default is the number of available ones minus one.}
 
 \item{seed}{Integer. seed number used to randomize iterations. if NULL, a random number will be enerated and printed}
+
+\item{verbose}{Logical. Should progress be printed or not.}
 }
 \value{
 A list of length equal to the number of trees included in the multiphylo object, storing

@@ -15,6 +15,6 @@ This is a subtree extracted from the complete mammal phylogeny by Upham et al. (
 monotreme.tree
 }
 \description{
-Example phylogeny for EDGEcalc package
+Example phylogeny for rEDGE package
 }
 \keyword{datasets}

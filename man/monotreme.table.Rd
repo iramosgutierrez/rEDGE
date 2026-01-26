@@ -5,7 +5,7 @@
 \alias{monotreme.table}
 \title{monotreme.table}
 \format{
-An info data frame
+An data frame with RL assessments
 \describe{
 Data frame with Red List assessments for the 5 species of monotremes (IUCN, September 2025)
 
