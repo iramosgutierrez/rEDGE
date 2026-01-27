@@ -41,6 +41,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calculate_EDGE2</span><span class="op">(</span></span>
 <span>  <span class="va">tree</span>,</span>
 <span>  <span class="va">table</span>,</span>
+<span>  ext.prob <span class="op">=</span> <span class="st">"Isaac"</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  sort.list <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  return.all <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -57,6 +58,10 @@
 
 <dt id="arg-table">table<a class="anchor" aria-label="anchor" href="#arg-table"></a></dt>
 <dd><p>a tibble or data frame with two columns, named "species" and "RL.cat"</p></dd>
+
+
+<dt id="arg-ext-prob">ext.prob<a class="anchor" aria-label="anchor" href="#arg-ext-prob"></a></dt>
+<dd><p>Extinction probability associated to category, based on Isaac et al. (2007) or Mooers et al. (2008).</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
@@ -79,7 +84,14 @@
 </ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>Gumbs, R., Gray, C. L., Böhm, M., Burfield, I. J., Couchman, O. R., Faith, D. P.,
+    <p>Isaac, N.J.B., Turvey, S.T., Collen, B., Waterman, C., Baillie, J.E.M. (2007).
+Mammals on the EDGE: Conservation Priorities Based on Threat and Phylogeny. PloS one, 2(3), e296.
+<a href="https://doi.org/10.1371/journal.pone.0000296" class="external-link">https://doi.org/10.1371/journal.pone.0000296</a></p>
+<p>Mooers, A.Ø., Faith, D. P., &amp; Maddison, W. P. (2008).
+ Converting endangered species categories to probabilities of extinction for phylogenetic
+ conservation prioritization. PloS one, 3(11), e3700.
+<a href="https://doi.org/10.1371/journal.pone.0003700" class="external-link">https://doi.org/10.1371/journal.pone.0003700</a></p>
+<p>Gumbs, R., Gray, C. L., Böhm, M., Burfield, I. J., Couchman, O. R., Faith, D. P.,
 Forest, F., Hoffmann, M., #' Isaac, N. J. B., Jetz, W., Mace, G. M., Mooers, A. O., Safi, K.,
 Scott, O., Steel, M., Tucker, C. M., Pearse, W. D., Owen, N. R. &amp; Rosindell, J. (2023).
 The EDGE2 protocol: Advancing the prioritisation of Evolutionarily Distinct and Globally Endangered species for

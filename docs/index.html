@@ -56,7 +56,7 @@
 </h2>
 <p>The EDGE index is a metric that aims to prioritize species’ conservation bsed on both theis phylogenetic singularity (i.e. ED, Evolutionaty Distinctiveness) and their extinction risk (GE, Globally Endangered). Based on this idea, several methods have been developed in order to calculate individual EDGE scores.</p>
 <p>To illustrate the differences among methods ant their implementationn within <code>rEDGE</code> package, we will see some examples using monotremates (i.e. platypus and echidna species).</p>
-<p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="50%" alt="rEDGE logo"></p>
+<p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="50%"></p>
 </div>
 <div class="section level2">
 <h2 id="edge1">EDGE1<a class="anchor" aria-label="anchor" href="#edge1"></a>
@@ -126,90 +126,6 @@
 <span>                         verbose <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">EDGE2</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
-<colgroup>
-<col width="33%">
-<col width="10%">
-<col width="14%">
-<col width="14%">
-<col width="12%">
-<col width="15%">
-</colgroup>
-<thead><tr>
-<th align="left">species</th>
-<th align="left">RL.cat</th>
-<th align="right">TBL</th>
-<th align="right">pext</th>
-<th align="right">ED</th>
-<th align="right">EDGE</th>
-</tr></thead>
-<tbody>
-<tr>
-<td align="left">Zaglossus_bruijnii</td>
-<td align="left">CR</td>
-<td align="right">8.147095</td>
-<td align="right">0.9999000</td>
-<td align="right">10.69954</td>
-<td align="right">10.6984729</td>
-</tr>
-<tr>
-<td align="left">Zaglossus_attenboroughi</td>
-<td align="left">CR</td>
-<td align="right">8.147095</td>
-<td align="right">0.9905879</td>
-<td align="right">10.72354</td>
-<td align="right">10.6226066</td>
-</tr>
-<tr>
-<td align="left">Ornithorhynchus_anatinus</td>
-<td align="left">NT</td>
-<td align="right">29.832422</td>
-<td align="right">0.1496076</td>
-<td align="right">29.83242</td>
-<td align="right">4.4631576</td>
-</tr>
-<tr>
-<td align="left">Zaglossus_bartoni</td>
-<td align="left">VU</td>
-<td align="right">9.177698</td>
-<td align="right">0.2818624</td>
-<td align="right">14.61081</td>
-<td align="right">4.1182375</td>
-</tr>
-<tr>
-<td align="left">Tachyglossus_aculeatus</td>
-<td align="left">LC</td>
-<td align="right">14.111567</td>
-<td align="right">0.0350753</td>
-<td align="right">18.50054</td>
-<td align="right">0.6489122</td>
-</tr>
-</tbody>
-</table>
-<p>As this EDGE score is iteration dependant (i.e. there is a random factor in the sampling of extinction probabilty), a set of EDGE2 values can be calculated and averaged posteriorly. This multiple calculation is performed by <code>calculate_EDGE2_multiple</code> function, which allows to parallelize in order to speed computation times. In this example we are calculating EDGE scores 50 times and averaging the results after.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">EDGE2mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calculate_EDGE2_multiple.html">calculate_EDGE2_multiple</a></span><span class="op">(</span>tree <span class="op">=</span> <span class="va">monotreme.tree</span>, </span>
-<span>                                      table <span class="op">=</span> <span class="va">monotreme.table</span>, </span>
-<span>                                      n.iter <span class="op">=</span> <span class="fl">50</span>,</span>
-<span>                                      parallelize <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                                      n.cores <span class="op">=</span> <span class="fl">10</span></span>
-<span>                                      <span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Seed has been set to: 39380337"</span></span>
-<span></span>
-<span></span>
-<span><span class="co"># Now we summarise table results...</span></span>
-<span><span class="va">EDGE2mult_summ</span> <span class="op">&lt;-</span> <span class="va">EDGE2mult</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">bind_rows</span><span class="op">(</span><span class="op">)</span>  <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">species</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">summarise</span><span class="op">(</span>RL.cat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">RL.cat</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>            TBL  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">TBL</span> <span class="op">)</span>,</span>
-<span>            pext <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">pext</span><span class="op">)</span>,</span>
-<span>            ED   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">ED</span>  <span class="op">)</span>,</span>
-<span>            EDGE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">EDGE</span><span class="op">)</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">EDGE</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">EDGE2mult_summ</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="33%">
@@ -229,44 +145,128 @@
 </tr></thead>
 <tbody>
 <tr>
-<td align="left">Zaglossus_bruijnii</td>
-<td align="left">CR</td>
-<td align="right">8.147095</td>
-<td align="right">0.9240231</td>
-<td align="right">10.34608</td>
-<td align="right">9.5572687</td>
-</tr>
-<tr>
 <td align="left">Zaglossus_attenboroughi</td>
 <td align="left">CR</td>
 <td align="right">8.147095</td>
-<td align="right">0.9180105</td>
-<td align="right">10.35906</td>
-<td align="right">9.5082837</td>
+<td align="right">0.9999000</td>
+<td align="right">10.43494</td>
+<td align="right">10.433897</td>
+</tr>
+<tr>
+<td align="left">Zaglossus_bruijnii</td>
+<td align="left">CR</td>
+<td align="right">8.147095</td>
+<td align="right">0.9999000</td>
+<td align="right">10.43494</td>
+<td align="right">10.433897</td>
 </tr>
 <tr>
 <td align="left">Ornithorhynchus_anatinus</td>
 <td align="left">NT</td>
 <td align="right">29.832422</td>
-<td align="right">0.1284080</td>
+<td align="right">0.1661908</td>
 <td align="right">29.83242</td>
-<td align="right">3.8307210</td>
+<td align="right">4.957875</td>
 </tr>
 <tr>
 <td align="left">Zaglossus_bartoni</td>
 <td align="left">VU</td>
 <td align="right">9.177698</td>
-<td align="right">0.2408466</td>
-<td align="right">14.02165</td>
-<td align="right">3.3645653</td>
+<td align="right">0.2003866</td>
+<td align="right">15.45166</td>
+<td align="right">3.096305</td>
 </tr>
 <tr>
 <td align="left">Tachyglossus_aculeatus</td>
 <td align="left">LC</td>
 <td align="right">14.111567</td>
-<td align="right">0.0493775</td>
-<td align="right">17.30895</td>
-<td align="right">0.8474662</td>
+<td align="right">0.0853227</td>
+<td align="right">17.26119</td>
+<td align="right">1.472770</td>
+</tr>
+</tbody>
+</table>
+<p>As this EDGE score is iteration dependant (i.e. there is a random factor in the sampling of extinction probabilty), a set of EDGE2 values can be calculated and averaged posteriorly. This multiple calculation is performed by <code>calculate_EDGE2_multiple</code> function, which allows to parallelize in order to speed computation times. In this example we are calculating EDGE scores 50 times and averaging the results after.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">EDGE2mult</span> <span class="op">&lt;-</span> <span class="fu">calculate_EDGE2_multiple</span><span class="op">(</span>tree <span class="op">=</span> <span class="va">monotreme.tree</span>, </span>
+<span>                                      table <span class="op">=</span> <span class="va">monotreme.table</span>, </span>
+<span>                                      n.iter <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>                                      parallelize <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                                      n.cores <span class="op">=</span> <span class="fl">10</span></span>
+<span>                                      <span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Seed has been set to: 74593047"</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Now we summarise table results...</span></span>
+<span><span class="va">EDGE2mult_summ</span> <span class="op">&lt;-</span> <span class="va">EDGE2mult</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">bind_rows</span><span class="op">(</span><span class="op">)</span>  <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">species</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>RL.cat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">RL.cat</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>            TBL  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">TBL</span> <span class="op">)</span>,</span>
+<span>            pext <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">pext</span><span class="op">)</span>,</span>
+<span>            ED   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">ED</span>  <span class="op">)</span>,</span>
+<span>            EDGE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">EDGE</span><span class="op">)</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">EDGE</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">EDGE2mult_summ</span><span class="op">)</span></span></code></pre></div>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="34%">
+<col width="10%">
+<col width="14%">
+<col width="14%">
+<col width="13%">
+<col width="13%">
+</colgroup>
+<thead><tr>
+<th align="left">species</th>
+<th align="left">RL.cat</th>
+<th align="right">TBL</th>
+<th align="right">pext</th>
+<th align="right">ED</th>
+<th align="right">EDGE</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">Zaglossus_attenboroughi</td>
+<td align="left">CR</td>
+<td align="right">8.147095</td>
+<td align="right">0.9127187</td>
+<td align="right">10.33977</td>
+<td align="right">9.441899</td>
+</tr>
+<tr>
+<td align="left">Zaglossus_bruijnii</td>
+<td align="left">CR</td>
+<td align="right">8.147095</td>
+<td align="right">0.8996084</td>
+<td align="right">10.37114</td>
+<td align="right">9.335088</td>
+</tr>
+<tr>
+<td align="left">Ornithorhynchus_anatinus</td>
+<td align="left">NT</td>
+<td align="right">29.832422</td>
+<td align="right">0.1246440</td>
+<td align="right">29.83242</td>
+<td align="right">3.718433</td>
+</tr>
+<tr>
+<td align="left">Zaglossus_bartoni</td>
+<td align="left">VU</td>
+<td align="right">9.177698</td>
+<td align="right">0.2413737</td>
+<td align="right">13.95772</td>
+<td align="right">3.373585</td>
+</tr>
+<tr>
+<td align="left">Tachyglossus_aculeatus</td>
+<td align="left">LC</td>
+<td align="right">14.111567</td>
+<td align="right">0.0563593</td>
+<td align="right">17.24589</td>
+<td align="right">0.969964</td>
 </tr>
 </tbody>
 </table>

@@ -39,17 +39,17 @@ calculate_EDGE <- function(tree, table, method = "EDGE2", ...){
 #' @export
 #'
 calculate_EDGE_multiple <- function(tree,
-                                     table,
-                                     verbose = T,
-                                     ext.prob = "Isaac",
-                                     method ="EDGE2",
-                                     sort.list = FALSE,
-                                     return.all = FALSE,
-                                     summarise = TRUE,
-                                     n.iter = 10,
-                                     parallelize = FALSE,
-                                     n.cores = NULL,
-                                     seed = NULL){
+                                    table,
+                                    verbose = T,
+                                    ext.prob = "Isaac",
+                                    method ="EDGE2",
+                                    sort.list = FALSE,
+                                    return.all = FALSE,
+                                    summarise = TRUE,
+                                    n.iter = 10,
+                                    parallelize = FALSE,
+                                    n.cores = NULL,
+                                    seed = NULL){
 
 
   if(is.null(seed)){
@@ -180,7 +180,7 @@ calculate_EDGE_multiphylo <- function(multiphylo,
                                             future.seed = seed
     )
     future::plan(future::sequential)
-    }else{
+  }else{
     EDGElist <- future.apply::future_lapply(multiphylo,
                                             calculate_EDGE,
                                             table = table,
@@ -190,7 +190,7 @@ calculate_EDGE_multiphylo <- function(multiphylo,
                                             return.all = return.all,
                                             verbose = verbose,
 
-                                                 future.seed = seed
+                                            future.seed = seed
     )
   }
 

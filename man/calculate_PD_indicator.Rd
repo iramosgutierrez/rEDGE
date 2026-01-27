@@ -4,7 +4,7 @@
 \alias{calculate_PD_indicator}
 \title{Phylogenetic Diversity indicator calculating function}
 \usage{
-calculate_PD_indicator(multiphylo, table, time.cols)
+calculate_PD_indicator(multiphylo, table, time.cols, ...)
 }
 \arguments{
 \item{multiphylo}{An object of class mutliPhylo where to calculate the PDi}
