@@ -153,7 +153,7 @@ get_extinction_prob <- function(table, ext.prob = ext.prob, verbose = T){
   }
 
   if(!all(colnames(table) == c("species", "RL.cat"))){
-    stop("Column names of 'table' should be 'species' and RL.cat'")
+    stop("Column names of 'table' should be 'species' and 'RL.cat'")
   }
 
   cat_pext_table <- create_pext_by_cat(ext.prob = ext.prob)

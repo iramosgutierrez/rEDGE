@@ -12,7 +12,8 @@
 #'
 calculate_EDGE1 <- function(tree,
                             table,
-                            sort.list = FALSE){
+                            sort.list = FALSE,
+                            ...){
 
   if(!all(tree$tip.label %in% table$species )){
     warning("Some species in 'tree$tip.label' are not included in 'table$species'")

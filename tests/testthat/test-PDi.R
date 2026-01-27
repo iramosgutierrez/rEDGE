@@ -1,6 +1,6 @@
 
-rl.data <- crocodile.table
-trees <- crocodile.trees
+rl.data <- rEDGE::crocodile.table
+trees <- rEDGE::crocodile.trees
 tree <- trees[1]
 
 
@@ -13,11 +13,11 @@ test_that("PDindicator", {
                                 rl.data,
                                 time.cols = c("RL.2023", "RL.2024"),
 
-                                verbose = FALSE,
+                                verbose = FALSE, parallelize = F,
                                 seed = 123)
 
   expect_equal(class(pdi), "list")
-
+  expect_equal(names(pdi), c("RL.2023", "RL.2024"))
 })
 
 
@@ -29,7 +29,8 @@ test_that("different extprob", {
   expect_message(calculate_PD_indicator(trees[1:3], rl.data,
                                         time.cols = c("RL.2023", "RL.2024"),
 
-                                verbose = TRUE, seed = 123),
+                                verbose = T,
+                                seed = 123),
 
                  regexp = "Calculating EDGE2 values using Isaac extinction probabilities"
   )

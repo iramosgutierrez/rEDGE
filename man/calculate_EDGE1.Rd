@@ -4,7 +4,7 @@
 \alias{calculate_EDGE1}
 \title{Calculate EDGE index}
 \usage{
-calculate_EDGE1(tree, table, sort.list = FALSE)
+calculate_EDGE1(tree, table, sort.list = FALSE, ...)
 }
 \arguments{
 \item{tree}{a phylo object.}

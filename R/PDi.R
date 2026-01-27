@@ -22,7 +22,7 @@
 #'
 calculate_PD_indicator <- function(multiphylo, table, time.cols, ...){
 
-  if(!all(time.cols) %in% colnames(table)){stop("Please make sure all 'time.cols' values are column names in 'table'")}
+  if(!all(time.cols %in% colnames(table))){stop("Please make sure all 'time.cols' values are column names in 'table'")}
   PDi_list <- vector(mode = "list", length = length(time.cols))
   names(PDi_list) <- time.cols
 
@@ -32,6 +32,7 @@ calculate_PD_indicator <- function(multiphylo, table, time.cols, ...){
     edge_values_tn <- calculate_EDGE_multiphylo(multiphylo,
                                                 table_tn,
                                                 return.all = TRUE,
+                                                summarise = FALSE,
                                                 ...
     )
 
