@@ -54,6 +54,8 @@ calculate_EDGE_multiple <- function(tree,
                                             method = method,
                                             tree = tree,
                                             table = table,
+                                            species.col = "species",
+                                            RLcat.col = "RLcat",
                                             ext.prob = ext.prob,
                                             sort.list = sort.list,
                                             return.all = return.all,
@@ -66,10 +68,12 @@ calculate_EDGE_multiple <- function(tree,
                                             method = method,
                                             tree = tree,
                                             table = table,
+                                            species.col = "species",
+                                            RLcat.col = "RLcat",
                                             ext.prob = ext.prob,
                                             sort.list = sort.list,
                                             return.all = return.all,
-                                            seed = seed,
+
 
                                             future.seed = seed)
   }
