@@ -12,6 +12,17 @@
 #'
 #' @returns A list of length = n.iter
 #'
+#' @examplesIf interactive()
+#' calculate_EDGE_multiple(tree,
+#'                         table,
+#'                         verbose = T,
+#'                         sort.list = T,
+#'                         n.iter = 4,
+#'                         parallelize = T,
+#'                         n.cores = 4,
+#'                         seed = 123456)
+#' # example code
+#'
 #' @author I. Ramos-Gutiérrez.
 #'
 #' @export
@@ -82,7 +93,7 @@ calculate_EDGE_multiple <- function(tree,
 
     EDGElist_compl <- dplyr::bind_rows(EDGElist) |>
       dplyr::group_by(species) |>
-      dplyr::summarise(RL.cat = unique(RL.cat),
+      dplyr::summarise(RLcat = unique(RLcat),
 
                        TBLmed = unique(TBL),
 

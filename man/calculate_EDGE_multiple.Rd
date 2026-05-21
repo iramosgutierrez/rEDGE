@@ -48,6 +48,19 @@ A list of length = n.iter
 \description{
 Multiple iteration EDGE calculating function.
 }
+\examples{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
+calculate_EDGE_multiple(tree,
+                        table,
+                        verbose = T,
+                        sort.list = T,
+                        n.iter = 4,
+                        parallelize = T,
+                        n.cores = 4,
+                        seed = 123456)
+# example code
+\dontshow{\}) # examplesIf}
+}
 \author{
 I. Ramos-Gutiérrez.
 }

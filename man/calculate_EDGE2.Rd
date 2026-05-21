@@ -12,7 +12,8 @@ calculate_EDGE2(
   ext.prob = "Isaac",
   verbose = TRUE,
   sort.list = FALSE,
-  return.all = FALSE
+  return.all = FALSE,
+  seed = NULL
 )
 }
 \arguments{

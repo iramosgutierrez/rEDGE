@@ -76,7 +76,7 @@ calculate_EDGE_multiphylo <- function(multiphylo,
   if (!isTRUE(return.all) & isTRUE(summarise)){
 
     EDGElist_compl <- dplyr::bind_rows(EDGElist) |>
-      dplyr::select(-`RL.cat`) |>
+      dplyr::select(-`RLcat`) |>
       dplyr::group_by(species) |>
       dplyr::summarise(TBLmed = mean(TBL),
 
@@ -90,7 +90,7 @@ calculate_EDGE_multiphylo <- function(multiphylo,
                        EDGEiqr = IQR(EDGE)
       ) |>
       dplyr::left_join(table, by= "species") |>
-      dplyr::relocate(RL.cat , .after = species)
+      dplyr::relocate(RLcat , .after = species)
 
     if(isTRUE(sort.list)){EDGElist_compl <- dplyr::arrange(EDGElist_compl, dplyr::desc(EDGEmed))}
   }else{
