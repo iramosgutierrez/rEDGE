@@ -69,6 +69,7 @@ calculate_EDGE_multiple <- function(tree,
                                             ext.prob = ext.prob,
                                             sort.list = sort.list,
                                             return.all = return.all,
+                                            seed = seed,
 
                                             future.seed = seed)
   }

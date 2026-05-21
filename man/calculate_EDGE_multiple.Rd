@@ -22,7 +22,7 @@ calculate_EDGE_multiple(
 \arguments{
 \item{tree}{a phylo object.}
 
-\item{table}{a tibble or data frame with two columns, named "species" and "RL.cat"}
+\item{table}{a tibble or data frame with two columns, including species names and Red List categories.}
 
 \item{verbose}{Logical. Should progress be printed or not.}
 

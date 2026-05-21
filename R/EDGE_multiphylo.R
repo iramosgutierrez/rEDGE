@@ -89,8 +89,8 @@ calculate_EDGE_multiphylo <- function(multiphylo,
                        EDGEmed = median(EDGE),
                        EDGEiqr = IQR(EDGE)
       ) |>
-    dplyr::left_join(table, by= "species") |>
-    dplyr::relocate(RL.cat , .after = species)
+      dplyr::left_join(table, by= "species") |>
+      dplyr::relocate(RL.cat , .after = species)
 
     if(isTRUE(sort.list)){EDGElist_compl <- dplyr::arrange(EDGElist_compl, dplyr::desc(EDGEmed))}
   }else{

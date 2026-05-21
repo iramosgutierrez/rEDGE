@@ -4,12 +4,23 @@
 \alias{calculate_EDGE1}
 \title{Calculate EDGE index}
 \usage{
-calculate_EDGE1(tree, table, sort.list = FALSE, ...)
+calculate_EDGE1(
+  tree,
+  table,
+  species.col = "species",
+  RLcat.col = "RLcat",
+  sort.list = FALSE,
+  ...
+)
 }
 \arguments{
 \item{tree}{a phylo object.}
 
-\item{table}{a tibble or data frame with two columns, named "species" and "RL.cat"}
+\item{table}{a tibble or data frame with two columns, including species names and Red List categories.}
+
+\item{species.col}{column storing species names. If not specified, a column named "species" will be searched for.}
+
+\item{RLcat.col}{column storing Red List assessments names. If not specified, a column named "RLcat" will be searched for.}
 
 \item{sort.list}{Logical. If TRUE, the EDGE list will be sorted from higher to lower values.}
 }

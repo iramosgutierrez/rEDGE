@@ -1,7 +1,9 @@
 #' Calculate EDGE index
 #'
 #' @param tree a phylo object.
-#' @param table a tibble or data frame with two columns, named "species" and "RL.cat"
+#' @param table a tibble or data frame with two columns, including species names and Red List categories.
+#' @param species.col column storing species names. If not specified, a column named "species" will be searched for.
+#' @param RLcat.col column storing Red List assessments names. If not specified, a column named "RLcat" will be searched for.
 #' @param sort.list Logical. If TRUE, the EDGE list will be sorted from higher to lower values.
 #'
 #' @return a data frame with the input table and the EDGE metric (sensu  Isaac et al., 2007).
@@ -12,10 +14,23 @@
 #'
 calculate_EDGE1 <- function(tree,
                             table,
+                            species.col = "species",
+                            RLcat.col = "RLcat",
                             sort.list = FALSE,
                             ...){
 
-  if(!all(tree$tip.label %in% table$species )){
+  # check column names and rename
+  if(!species.col %in% colnames(table)){
+    stop("Column '", species.col, "' is not a column name in your table.\nPlease check or alternatively assign 'species' as column name in your table")
+  }
+
+  if(!RLcat.col %in% colnames(table)){
+    stop("Column '", RLcat.col, "' is not a column name in your table.\nPlease check or alternatively assign 'RLcat' as column name in your table")
+  }
+  table <- table[,c(species.col, RLcat.col)]
+  colnames(table) <-  c("species", "RLcat")
+
+  if(!all(tree$tip.label %in% table$species)){
     warning("Some species in 'tree$tip.label' are not included in 'table$species'")
   }
 
@@ -24,18 +39,18 @@ calculate_EDGE1 <- function(tree,
   }
 
 
-  if(!all(table$RL.cat %in% c(cat_pext()$rl.cat, "CD", "NE", "DD", "EW") )){
+  if(!all(table$RLcat %in% c(cat_pext()$rl.cat, "CD", "NE", "DD", "EW") )){
     stop("Categories should be: ", paste0(c(cat_pext()$rl.cat, "CD", "NE", "DD", "EW"), collapse = " "))
   }
 
   table$pext <- NA_integer_
-  table$pext[table$RL.cat == "LC"] <- 0
-  table$pext[table$RL.cat == "NT"] <- 1
-  table$pext[table$RL.cat == "CD"] <- 1
-  table$pext[table$RL.cat == "VU"] <- 2
-  table$pext[table$RL.cat == "EN"] <- 3
-  table$pext[table$RL.cat == "CR"] <- 4
-  table$pext[table$RL.cat == "EW"] <- 4
+  table$pext[table$RLcat == "LC"] <- 0
+  table$pext[table$RLcat == "NT"] <- 1
+  table$pext[table$RLcat == "CD"] <- 1
+  table$pext[table$RLcat == "VU"] <- 2
+  table$pext[table$RLcat == "EN"] <- 3
+  table$pext[table$RLcat == "CR"] <- 4
+  table$pext[table$RLcat == "EW"] <- 4
 
   ED <- suppressWarnings(caper::ed.calc(tree))
   ED_res <- ED$spp

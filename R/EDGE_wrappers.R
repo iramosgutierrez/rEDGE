@@ -4,6 +4,13 @@
 #' The output will be the result of running calculate_EDGE1, or calculate_EDGE2 depending on the method specified.
 #' @inheritParams calculate_EDGE2
 #'
+#' @examplesIf interactive()
+#' calculate_EDGE(tree = cycad.tree,
+#'                table = cycad.table,
+#'                RLcat.col = "RL_2014",
+#'                method = "EDGE2",
+#'                ext.prob ="IUCN50")
+#'
 #' @export
 #'
 calculate_EDGE <- function(tree, table, method = "EDGE2", ...){
@@ -19,4 +26,5 @@ calculate_EDGE <- function(tree, table, method = "EDGE2", ...){
   }
   return(result)
 }
+
 

@@ -9,11 +9,20 @@ calculate_EDGE(tree, table, method = "EDGE2", ...)
 \arguments{
 \item{tree}{a phylo object.}
 
-\item{table}{a tibble or data frame with two columns, named "species" and "RL.cat"}
+\item{table}{a tibble or data frame with two columns, including species names and Red List categories.}
 
 \item{method}{Method to be used. It has to be either "EDGE1" or "EDGE2".
 The output will be the result of running calculate_EDGE1, or calculate_EDGE2 depending on the method specified.}
 }
 \description{
 Calculate EDGE wrapping function
+}
+\examples{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
+calculate_EDGE(tree = cycad.tree,
+               table = cycad.table,
+               RLcat.col = "RL_2014",
+               method = "EDGE2",
+               ext.prob ="IUCN50")
+\dontshow{\}) # examplesIf}
 }

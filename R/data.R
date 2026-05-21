@@ -23,24 +23,24 @@
 "monotreme.table"
 
 
-#' crocodile.trees
+#' cycad.tree
 #'
-#' Example phylogeny for rEDGE package
+#' Phylogeny of cycads oftained from Forest et al. (2018)
 #'
-#' @format A multiPhylo object storing 10 crocodile phylogenies
+#' @format A phylo object
 #' \describe{
-#' multiPhylo object with 10 phylogenies including 27 species of crocodiles.
+#' Phylo object including 337 species of cycads.
 #' }
-"crocodile.trees"
+"cycad.tree"
 
 
-#' crocodile.table
+#' cycad.table
 #'
-#' Information data frame with Red List assessments for the species in the crocodile phylogeny for years 2023 and 2024.
+#' Information data frame with Red List assessments for cycad species in two time frames, namely 2003 and 2014.
 #'
-#' @format An info data frame
+#' @format An data frame
 #' \describe{
-#' Data frame with Red List assessments for the 27 species of monotremes for years 2023 & 2024.
+#' Data frame with Red List assessments for the 337 species of cycads for years 2003 & 2014.
 #'
 #' }
-"crocodile.table"
+"cycad.table"

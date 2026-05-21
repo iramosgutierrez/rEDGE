@@ -7,6 +7,8 @@
 calculate_EDGE2(
   tree,
   table,
+  species.col = "species",
+  RLcat.col = "RLcat",
   ext.prob = "Isaac",
   verbose = TRUE,
   sort.list = FALSE,
@@ -16,7 +18,11 @@ calculate_EDGE2(
 \arguments{
 \item{tree}{a phylo object.}
 
-\item{table}{a tibble or data frame with two columns, named "species" and "RL.cat"}
+\item{table}{a tibble or data frame with two columns, including species names and Red List categories.}
+
+\item{species.col}{column storing species names. If not specified, a column named "species" will be searched for.}
+
+\item{RLcat.col}{column storing Red List assessments names. If not specified, a column named "RLcat" will be searched for.}
 
 \item{ext.prob}{Extinction probability associated to category, based on Isaac et al. (2007) or Mooers et al. (2008).}
 

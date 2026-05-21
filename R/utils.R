@@ -106,13 +106,13 @@ create_pext_by_cat <- function(n = 1000000, ext.prob){
   data$rank.pext <- predict(model, data)
   data$rank.pext[data$rank.pext <= 0] <- 0.0001
   data$rank.pext[data$rank.pext >= 1] <- 0.9999
-  pext.LC <- data.frame(RL.cat = "LC", pext =data$rank.pext[data$pext == pext.tap[2]])
-  pext.NT <- data.frame(RL.cat = "NT", pext =data$rank.pext[data$pext == pext.tap[3]])
-  pext.CD <- data.frame(RL.cat = "CD", pext =data$rank.pext[data$pext == pext.tap[3]]) # Conservation dependent ~ NT
-  pext.VU <- data.frame(RL.cat = "VU", pext =data$rank.pext[data$pext == pext.tap[4]])
-  pext.EN <- data.frame(RL.cat = "EN", pext =data$rank.pext[data$pext == pext.tap[5]])
-  pext.CR <- data.frame(RL.cat = "CR", pext =data$rank.pext[data$pext == pext.tap[6]])
-  pext.EW <- data.frame(RL.cat = "EW", pext =data$rank.pext[data$pext == pext.tap[6]]) #EW ~ CR
+  pext.LC <- data.frame(RLcat = "LC", pext =data$rank.pext[data$pext == pext.tap[2]])
+  pext.NT <- data.frame(RLcat = "NT", pext =data$rank.pext[data$pext == pext.tap[3]])
+  pext.CD <- data.frame(RLcat = "CD", pext =data$rank.pext[data$pext == pext.tap[3]]) # Conservation dependent ~ NT
+  pext.VU <- data.frame(RLcat = "VU", pext =data$rank.pext[data$pext == pext.tap[4]])
+  pext.EN <- data.frame(RLcat = "EN", pext =data$rank.pext[data$pext == pext.tap[5]])
+  pext.CR <- data.frame(RLcat = "CR", pext =data$rank.pext[data$pext == pext.tap[6]])
+  pext.EW <- data.frame(RLcat = "EW", pext =data$rank.pext[data$pext == pext.tap[6]]) #EW ~ CR
   pext.obj <- rbind(pext.CR,pext.EN, pext.VU, pext.NT, pext.LC)
 
   pext.obj.sample <- NULL
@@ -123,11 +123,11 @@ create_pext_by_cat <- function(n = 1000000, ext.prob){
   #
   #
 
-  # for(i in unique(pext.obj$RL.cat)){
+  # for(i in unique(pext.obj$RLcat)){
   #
-  #   a <- pext.obj$pext[pext.obj$RL.cat == i]
-  #   if(median(a) < pext$pext[pext$rl.cat == i]){
-  #     while(median(a) < pext$pext[pext$rl.cat == i]){
+  #   a <- pext.obj$pext[pext.obj$RLcat == i]
+  #   if(median(a) < pext$pext[pext$RLcat == i]){
+  #     while(median(a) < pext$pext[pext$RLcat == i]){
   #       a <- a[-sample(c(1:length(a)),50,prob = rev(a))]
   #     }
   #   }else{
@@ -135,8 +135,8 @@ create_pext_by_cat <- function(n = 1000000, ext.prob){
   #       a <- a[-sample(c(1:length(a)),50,prob = a)]
   #     }
   #   }
-  #   pext.obj.sample <- rbind(pext.obj.sample,data.frame(RL.cat = i, pext = a))
-  #   progressbar(which(unique(pext.obj$RL.cat) == i), length(unique(pext.obj$RL.cat)),
+  #   pext.obj.sample <- rbind(pext.obj.sample,data.frame(RLcat = i, pext = a))
+  #   progressbar(which(unique(pext.obj$RLcat) == i), length(unique(pext.obj$RLcat)),
   #               msg = "Sampling extinction probabilities...")
   # }
   # return(pext.obj.sample)
@@ -146,16 +146,17 @@ create_pext_by_cat <- function(n = 1000000, ext.prob){
 
 
 
-get_extinction_prob <- function(table, ext.prob = ext.prob, verbose = T){
+get_extinction_prob <- function(table, ext.prob = ext.prob, verbose = T, seed = seed){
 
   if(!inherits(table, c("data.frame", "tibble"))){
     stop("table object should be a tibble or data.frame")
   }
 
-  if(!all(colnames(table) == c("species", "RL.cat"))){
-    stop("Column names of 'table' should be 'species' and 'RL.cat'")
+  if(!all(colnames(table) == c("species", "RLcat"))){
+    stop("Column names of 'table' should be 'species' and 'RLcat'")
   }
 
+  set.seed(seed*2)
   cat_pext_table <- create_pext_by_cat(ext.prob = ext.prob)
 
   table$pext <- NA
@@ -166,15 +167,17 @@ get_extinction_prob <- function(table, ext.prob = ext.prob, verbose = T){
                   length(table$species),
                   msg = "Calculating extinction probabilites...")
     }
-    cat.i <- table$RL.cat[table$species==sp]
+    cat.i <- table$RLcat[table$species==sp]
     if(cat.i %in% c("NE", "DD")){
       # pext.i <- runif(1,0.0001, 0.9999)  # this makes DD and NE get ~ 0.5 pext in average
+      set.seed(seed + which(table$species == sp))
       pext.i <- sample(cat_pext_table$pext[cat_pext_table$pext < 0.999], size = 1)
     }else{
       if(cat.i %in% c("EX", "EW")){cat.i <- "CR"}
       if(cat.i =="CD"){cat.i <-"NT"}
 
-        pext.i <- sample(cat_pext_table$pext[cat_pext_table$RL.cat==cat.i], size = 1)
+      set.seed(seed + 2*which(table$species == sp))
+      pext.i <- sample(cat_pext_table$pext[cat_pext_table$RLcat==cat.i], size = 1)
       }
     table$pext[table$species== sp] <- pext.i
   }
@@ -184,4 +187,19 @@ get_extinction_prob <- function(table, ext.prob = ext.prob, verbose = T){
 
 IQR <- function(x){ #Inter-quartilic range
   return(stats::quantile(x, 0.75) - stats::quantile(x, 0.25))
+}
+
+
+# For EDGE2 function
+# remove excess pext, and reorders to same order as tree$tip.label
+into_order <- function(tree, pext){
+  new_pext <- pext[match(tree$tip.label, pext$species),]
+  return (new_pext)
+}
+
+# order tree components
+reorder_tree <- function(tree, ordering){
+  tree@edge.length <- tree@edge.length[ordering]
+  tree@edge <- tree@edge[ordering,]
+  return(tree)
 }

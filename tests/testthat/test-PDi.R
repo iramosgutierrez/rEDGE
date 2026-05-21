@@ -1,7 +1,7 @@
 
-rl.data <- rEDGE::crocodile.table
-trees <- rEDGE::crocodile.trees
-tree <- trees[1]
+rl.data <- rEDGE::cycad.table
+tree <- rEDGE::cycad.tree
+
 
 
 test_that("PDindicator", {
@@ -9,15 +9,15 @@ test_that("PDindicator", {
   skip_on_ci()
   skip_on_cran()
 
-  pdi <- calculate_PD_indicator(trees[1:3],
+  pdi <- calculate_PD_indicator(tree,
                                 rl.data,
-                                time.cols = c("RL.2023", "RL.2024"),
+                                time.cols = c("RL_2003", "RL_2014"),
 
                                 verbose = FALSE, parallelize = F,
                                 seed = 123)
 
   expect_equal(class(pdi), "list")
-  expect_equal(names(pdi), c("RL.2023", "RL.2024"))
+  expect_equal(names(pdi), time.cols)
 })
 
 

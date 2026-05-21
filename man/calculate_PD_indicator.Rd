@@ -4,10 +4,10 @@
 \alias{calculate_PD_indicator}
 \title{Phylogenetic Diversity indicator calculating function}
 \usage{
-calculate_PD_indicator(multiphylo, table, time.cols, ...)
+calculate_PD_indicator(trees, table, time.cols, ...)
 }
 \arguments{
-\item{multiphylo}{An object of class mutliPhylo where to calculate the PDi}
+\item{trees}{An object of class 'phylo' or 'mutliPhylo' where to calculate the PDi}
 
 \item{table}{a data.frame containing a column names 'species' with all taxa in the tree,
 and columns storing Red List categories.}
@@ -15,15 +15,15 @@ and columns storing Red List categories.}
 \item{time.cols}{column names of all times whose PDi should be calculated.}
 }
 \value{
-a list including a dataframe dor each time column, where PD, ePDloss and PDi are shown
+a list including a dataframe for each time column, where PD, ePDloss and PDi are shown
 }
 \description{
 Phylogenetic Diversity indicator calculating function
 }
 \examples{
- calculate_PD_indicator(multiphylo = crocodile.trees,
-                        table = crocodile.table,
-                        time.cols = c("RL.2023", "RL.2024"))
+calculate_PD_indicator(trees = cycad.tree,
+                       table = cycad.table,
+                       time.cols = c("RL_2003", "RL_2014"))
 
 
 }

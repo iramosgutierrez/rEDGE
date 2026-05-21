@@ -1,16 +1,3 @@
-# remove excess pext, and reorders to same order as tree$tip.label
-into_order <- function(tree, pext){
-  new_pext <- pext[match(tree$tip.label, pext$species),]
-  return (new_pext)
-}
-
-# order tree components
-reorder_tree <- function(tree, ordering){
-  tree@edge.length <- tree@edge.length[ordering]
-  tree@edge <- tree@edge[ordering,]
-  return(tree)
-}
-
 #' EDGE2 calculating function.
 #'
 #' @param verbose Logical. Should progress be printed or not.
@@ -48,14 +35,34 @@ reorder_tree <- function(tree, ordering){
 #'
 calculate_EDGE2 <- function(tree,
                             table,
+                            species.col = "species",
+                            RLcat.col = "RLcat",
                             ext.prob = "Isaac",
                             verbose = TRUE,
                             sort.list  = FALSE,
-                            return.all = FALSE){
+                            return.all = FALSE,
+                            seed = NULL){
 
 
-  table <- get_extinction_prob(table, ext.prob = ext.prob, verbose = verbose)
-  names(table) <- c("species", "RL.cat", "pext")
+  # check column names and rename
+  if(!species.col %in% colnames(table)){
+    stop("Column '", species.col, "' is not a column name in your table.\nPlease check or alternatively assign 'species' as column name in your table")
+  }
+
+  if(!RLcat.col %in% colnames(table)){
+    stop("Column '", RLcat.col, "' is not a column name in your table.\nPlease check or alternatively assign 'RLcat' as column name in your table")
+  }
+  table <- table[,c(species.col, RLcat.col)]
+  colnames(table) <-  c("species", "RLcat")
+
+  if(is.null(seed)){
+    seed <- round(runif(1, 1, 999999999))
+    message(paste0("Seed has been set to: ", seed))
+    }
+
+
+  table <- get_extinction_prob(table, ext.prob = ext.prob, verbose = verbose, seed = seed)
+  names(table) <- c("species", "RLcat", "pext")
 
   if(isTRUE(verbose)){
     message("Calculating EDGE2 values using ", ext.prob, " extinction probabilities")
@@ -78,7 +85,7 @@ calculate_EDGE2 <- function(tree,
                          pext = table$pext,
                          ED = NA,
                          EDGE = NA)
-  tree_dat <- merge(table[,c("species", "RL.cat")], tree_dat, sort = F)
+  tree_dat <- merge(table[,c("species", "RLcat")], tree_dat, sort = F)
 
 
 
@@ -133,7 +140,7 @@ calculate_EDGE2 <- function(tree,
   # Not tested: copied and modif. EDGE1
   # EDGEmedian <- median(tree_dat$ED)
   # tree_dat$EDGEspp <- "N"
-  # tree_dat$EDGEspp[tree_dat$EDGE > EDGEmedian & tree_dat$RL.cat %in% c("VU", "EN", "CR", "EW")]
+  # tree_dat$EDGEspp[tree_dat$EDGE > EDGEmedian & tree_dat$RLcat %in% c("VU", "EN", "CR", "EW")]
 
   # reorder tree
   tree <- reorder_tree(tree, order(ord))

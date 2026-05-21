@@ -13,12 +13,11 @@ calculate_EDGE_multiphylo(
   parallelize = FALSE,
   n.cores = NULL,
   seed = NULL,
-  verbose = TRUE,
   ...
 )
 }
 \arguments{
-\item{table}{a tibble or data frame with two columns, named "species" and "RL.cat"}
+\item{table}{a tibble or data frame with two columns, including species names and Red List categories.}
 
 \item{sort.list}{Logical. If TRUE, the EDGE list will be sorted from higher to lower values.}
 
@@ -29,8 +28,6 @@ calculate_EDGE_multiphylo(
 \item{n.cores}{Integer. Number of cores to use simultaneoulsly. Default is the number of available ones minus one.}
 
 \item{seed}{Integer. seed number used to randomize iterations. if NULL, a random number will be enerated and printed}
-
-\item{verbose}{Logical. Should progress be printed or not.}
 }
 \value{
 A list of length equal to the number of trees included in the multiphylo object, storing
