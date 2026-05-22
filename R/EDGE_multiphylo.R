@@ -13,21 +13,23 @@
 #'
 calculate_EDGE_multiphylo <- function(multiphylo,
                                       table,
-                                      method = "EDGE2",
-                                      sort.list = FALSE,
+                                      # species.col = "species",
+                                      # RLcat.col = "RLcat",
+                                      # method = "EDGE2",
+                                      # sort.list = FALSE,
                                       # ext.prob = "Isaac",
-                                      # return.all = FALSE,
+                                      return.all = FALSE,
                                       summarise = TRUE,
                                       parallelize = FALSE,
                                       n.cores = NULL,
                                       seed = NULL,
-                                      # verbose = TRUE,
+                                      verbose = TRUE,
                                       ...){
 
   if(!inherits(multiphylo, "multiPhylo")){stop("multiphylo should be an object of class 'multiPhylo'")}
   if(is.null(seed)){
     seed <- round(runif(1, 1, 999999999))
-    if(isTRUE(verbose)){message(paste0("Seed has been set to: ", seed))}
+    if(isTRUE(verbose)){message(paste0("Seed for `future` package has been set to: ", seed, "\n"))}
     set.seed(seed)
 
   }
@@ -46,14 +48,14 @@ calculate_EDGE_multiphylo <- function(multiphylo,
     EDGElist <- future.apply::future_lapply(multiphylo,
                                             calculate_EDGE,
                                             table = table,
-                                            species.col = "species",
-                                            RLcat.col = "RLcat",
+                                            # species.col = species.col,
+                                            # RLcat.col = RLcat.col,
                                             method = method,
                                             sort.list = sort.list,
                                             # ext.prob = ext.prob,      #just for EDGE2, goes to dots
                                             # return.all = return.all,  #just for EDGE2, goes to dots
                                             # verbose = FALSE,
-                                            ... ,
+
 
                                             future.seed = seed
     )
@@ -63,12 +65,12 @@ calculate_EDGE_multiphylo <- function(multiphylo,
                                             calculate_EDGE,
                                             table = table,
                                             method = method,
-                                            species.col = "species",
-                                            RLcat.col = "RLcat",
+                                            # species.col = species.col,
+                                            # RLcat.col = RLcat.col,
                                             sort.list = sort.list,
                                             # ext.prob = ext.prob,      #just for EDGE2, goes to dots
                                             # return.all = return.all,  #just for EDGE2, goes to dots
-                                            # verbose = FALSE,
+                                            verbose = FALSE,
                                             ... ,
 
                                             future.seed = seed

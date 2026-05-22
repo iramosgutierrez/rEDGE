@@ -72,3 +72,47 @@ calculate_EDGE1 <- function(tree,
 
    return(table)
 }
+
+
+calculate_EDGE1_multiphylo <- function(multitree,
+                                       table,
+                                       species.col = "species",
+                                       RLcat.col = "RLcat",
+                                       sort.list = FALSE,
+                                       ...){
+
+  # check column names and rename
+  if(!species.col %in% colnames(table)){
+    stop("Column '", species.col, "' is not a column name in your table.\nPlease check or alternatively assign 'species' as column name in your table")
+  }
+
+  if(!RLcat.col %in% colnames(table)){
+    stop("Column '", RLcat.col, "' is not a column name in your table.\nPlease check or alternatively assign 'RLcat' as column name in your table")
+  }
+  table <- table[,c(species.col, RLcat.col)]
+  colnames(table) <-  c("species", "RLcat")
+
+  if(!all(unique(unlist(sapply(multitree, '[', 4))) %in% table$species)){
+    warning("Some species in a 'tree$tip.label' are not included in 'table$species'")
+  }
+
+  if(!all(table$species %in% unique(unlist(sapply(multitree, '[', 4))))){
+    stop("Some species in 'table$species' are not included in a 'tree$tip.label'")
+  }
+
+
+  if(!all(table$RLcat %in% c(cat_pext()$rl.cat, "CD", "NE", "DD", "EW") )){
+    stop("Categories should be: ", paste0(c(cat_pext()$rl.cat, "CD", "NE", "DD", "EW"), collapse = " "))
+  }
+
+
+  lapply(multitree, calculate_EDGE1, table = table,
+         species.col = species.col,
+         RLcat.col = RLcat.col,
+         sort.list = sort.list)
+  # EDmedian <- median(table$ED)
+  # table$EDGEspp <- "N"
+  # table$EDGEspp[table$ED > EDmedian & table$RL.cat %in% c("VU", "EN", "CR", "EW")]
+
+  return(table)
+}
