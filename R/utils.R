@@ -203,3 +203,17 @@ reorder_tree <- function(tree, ordering){
   tree@edge <- tree@edge[ordering,]
   return(tree)
 }
+
+# for plotting
+iucn_palette <- c("NA" = "#C1B5A5",
+                  "NE" = "#FFFFFF",
+                  "DD" = "#D1D1C6",
+                  "LC" = "#60C659",
+                  "NT" = "#CCE226",
+                  "VU" = "#F9E814",
+                  "EN" = "#FC7F3F",
+                  "CR" = "#D81E05",
+                  "RE" = "#9B4F96",
+                  "EW" = "#542344",
+                  "EX" = "#000000")
+# levels(iucn_palette) <- c("NA",  "NE", "DD", "LC", "NT",  "VU", "EN", "CR", "RE",  "EW", "EX")

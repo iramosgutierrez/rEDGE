@@ -14,6 +14,6 @@ Phylo object including 337 species of cycads.
 cycad.tree
 }
 \description{
-Phylogeny of cycads oftained from Forest et al. (2018)
+Phylogeny of cycads oftained from Forest et al. (2018) (#1 of the 100 trees)
 }
 \keyword{datasets}

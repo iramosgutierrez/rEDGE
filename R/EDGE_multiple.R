@@ -43,7 +43,7 @@ calculate_EDGE_multiple <- function(tree,
 
   if(is.null(seed)){
     seed <- round(runif(1, 1, 999999999))
-    message(paste0("Seed has been set to: ", seed))
+    if(isTRUE(verbose)){message(paste0("Seed for `future` package has been set to: ", seed, "\n"))}
     set.seed(seed)
 
   }
@@ -70,6 +70,7 @@ calculate_EDGE_multiple <- function(tree,
                                             ext.prob = ext.prob,
                                             sort.list = sort.list,
                                             return.all = return.all,
+                                            verbose = verbose,
 
                                             future.seed = seed)
     future::plan(future::sequential)
@@ -84,6 +85,7 @@ calculate_EDGE_multiple <- function(tree,
                                             ext.prob = ext.prob,
                                             sort.list = sort.list,
                                             return.all = return.all,
+                                            verbose = verbose,
 
 
                                             future.seed = seed)

@@ -57,7 +57,7 @@ calculate_EDGE2 <- function(tree,
 
   if(is.null(seed)){
     seed <- round(runif(1, 1, 999999999))
-    message(paste0("Seed has been set to: ", seed))
+    if(isTRUE(verbose)){message(paste0("Seed has been set to: ", seed))}
     }
 
 

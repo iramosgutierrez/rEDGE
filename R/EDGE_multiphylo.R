@@ -27,7 +27,7 @@ calculate_EDGE_multiphylo <- function(multiphylo,
   if(!inherits(multiphylo, "multiPhylo")){stop("multiphylo should be an object of class 'multiPhylo'")}
   if(is.null(seed)){
     seed <- round(runif(1, 1, 999999999))
-    message(paste0("Seed has been set to: ", seed))
+    if(isTRUE(verbose)){message(paste0("Seed has been set to: ", seed))}
     set.seed(seed)
 
   }
@@ -46,6 +46,8 @@ calculate_EDGE_multiphylo <- function(multiphylo,
     EDGElist <- future.apply::future_lapply(multiphylo,
                                             calculate_EDGE,
                                             table = table,
+                                            species.col = "species",
+                                            RLcat.col = "RLcat",
                                             method = method,
                                             sort.list = sort.list,
                                             # ext.prob = ext.prob,      #just for EDGE2, goes to dots
@@ -61,6 +63,8 @@ calculate_EDGE_multiphylo <- function(multiphylo,
                                             calculate_EDGE,
                                             table = table,
                                             method = method,
+                                            species.col = "species",
+                                            RLcat.col = "RLcat",
                                             sort.list = sort.list,
                                             # ext.prob = ext.prob,      #just for EDGE2, goes to dots
                                             # return.all = return.all,  #just for EDGE2, goes to dots
@@ -75,8 +79,9 @@ calculate_EDGE_multiphylo <- function(multiphylo,
 
   if (!isTRUE(return.all) & isTRUE(summarise)){
 
-    EDGElist_compl <- dplyr::bind_rows(EDGElist) |>
-      dplyr::select(-`RLcat`) |>
+    EDGElist_compl <- lapply(1:length(multiphylo), function(i){EDGElist[[i]] |> dplyr::mutate(tree = i)}) |>
+      dplyr::bind_rows() |>
+      # dplyr::select(-`RLcat`) |>
       dplyr::group_by(species) |>
       dplyr::summarise(TBLmed = mean(TBL),
 
@@ -87,8 +92,7 @@ calculate_EDGE_multiphylo <- function(multiphylo,
                        EDiqr = IQR(ED),
 
                        EDGEmed = median(EDGE),
-                       EDGEiqr = IQR(EDGE)
-      ) |>
+                       EDGEiqr = IQR(EDGE)     ) |>
       dplyr::left_join(table, by= "species") |>
       dplyr::relocate(RLcat , .after = species)
 

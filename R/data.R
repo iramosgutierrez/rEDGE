@@ -25,13 +25,24 @@
 
 #' cycad.tree
 #'
-#' Phylogeny of cycads oftained from Forest et al. (2018)
+#' Phylogeny of cycads oftained from Forest et al. (2018) (#1 of the 100 trees)
 #'
 #' @format A phylo object
 #' \describe{
 #' Phylo object including 337 species of cycads.
 #' }
 "cycad.tree"
+
+
+#' cycad.multitree
+#'
+#' 100 phylogenies of cycads oftained from Forest et al. (2018)
+#'
+#' @format A mutliPhylo object
+#' \describe{
+#' 100 phylogenies object including 337 species of cycads.
+#' }
+"cycad.multitree"
 
 
 #' cycad.table
