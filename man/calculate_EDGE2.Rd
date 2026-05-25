@@ -9,9 +9,9 @@ calculate_EDGE2(
   table,
   species.col = "species",
   RLcat.col = "RLcat",
+  sort.list = FALSE,
   ext.prob = "Isaac",
   verbose = TRUE,
-  sort.list = FALSE,
   return.all = FALSE,
   seed = NULL
 )
@@ -25,11 +25,12 @@ calculate_EDGE2(
 
 \item{RLcat.col}{column storing Red List assessments names. If not specified, a column named "RLcat" will be searched for.}
 
-\item{ext.prob}{Extinction probability associated to category, based on Isaac et al. (2007) or Mooers et al. (2008).}
+\item{sort.list}{Logical. If TRUE, the EDGE list will be sorted from higher to lower values.}
+
+\item{ext.prob}{Extinction probability associated to category, based on Isaac et al. (2007) or Mooers et al. (2008).
+Accepted values are 'Isaac', 'IUCN50', 'IUCN100' and 'IUCN500'}
 
 \item{verbose}{Logical. Should progress be printed or not.}
-
-\item{sort.list}{Logical. If TRUE, the EDGE list will be sorted from higher to lower values.}
 
 \item{return.all}{Logical. If TRUE, an EDGE list, tree and ePDloss list is returned. If FALSE (default), only the list is returned.}
 }

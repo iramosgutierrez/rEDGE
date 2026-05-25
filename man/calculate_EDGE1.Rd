@@ -2,7 +2,7 @@
 % Please edit documentation in R/EDGE1.R
 \name{calculate_EDGE1}
 \alias{calculate_EDGE1}
-\title{Calculate EDGE index}
+\title{Calculate EDGE1 index}
 \usage{
 calculate_EDGE1(
   tree,
@@ -28,7 +28,7 @@ calculate_EDGE1(
 a data frame with the input table and the EDGE metric (sensu  Isaac et al., 2007).
 }
 \description{
-Calculate EDGE index
+Calculate EDGE1 index
 }
 \references{
 Isaac, N.J., Turvey, S.T., Collen, B., Waterman, C. & Baillie, J.E. (2007)

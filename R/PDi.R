@@ -1,7 +1,7 @@
 
 #' Phylogenetic Diversity indicator calculating function
 #'
-#' @param trees An object of class 'phylo' or 'mutliPhylo' where to calculate the PDi
+#' @param tree An object of class 'phylo' or 'mutliPhylo' where to calculate the PDi
 #' @param table a data.frame containing a column names 'species' with all taxa in the tree,
 #' and columns storing Red List categories.
 #' @param time.cols column names of all times whose PDi should be calculated.
@@ -20,34 +20,35 @@
 #'
 #' @export
 #'
-calculate_PD_indicator <- function(trees, table, time.cols, ...){
+calculate_PD_indicator <- function(tree, table, time.cols, seed = NULL, ...){
 
   if(!all(time.cols %in% colnames(table))){stop("Please make sure all 'time.cols' values are column names in 'table'")}
-  match.arg(class(trees), c("phylo", "multiPhylo"))
+  match.arg(class(tree), c("phylo", "multiPhylo"))
 
   PDi_list <- vector(mode = "list", length = length(time.cols))
   names(PDi_list) <- time.cols
 
   for(time.col in time.cols){
     table_tn <- table[,c("species", time.col)]
-    colnames(table_tn) <- c("species", "RL.cat")
+    colnames(table_tn) <- c("species", "RLcat")
 
-    if(class(trees) == "phylo"){
-      trees <- list(trees)
-      class(trees) <- "multiPhylo"
+    if(class(tree) == "phylo"){
+      tree <- list(tree)
+      class(tree) <- "multiPhylo"
     }
 
-      edge_values_tn <- calculate_EDGE_multiphylo(trees,
+      edge_values_tn <- calculate_EDGE2_multiphylo(tree,
                                                   table_tn,
                                                   return.all = TRUE,
                                                   summarise = FALSE,
+                                                  seed = seed,
                                                   ...
       )
 
 
 
 
-    epdl_vals_tn <- sapply(edge_values_tn, "[[", 3) |>
+    epdl_vals_tn <- sapply(edge_values_tn, "[[", "ePDloss") |>
       t() |>
       as.data.frame() |>
       dplyr::mutate(dplyr::across(dplyr::everything(), unlist)) |>

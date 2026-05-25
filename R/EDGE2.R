@@ -3,6 +3,7 @@
 #' @param verbose Logical. Should progress be printed or not.
 #' @param return.all Logical. If TRUE, an EDGE list, tree and ePDloss list is returned. If FALSE (default), only the list is returned.
 #' @param ext.prob Extinction probability associated to category, based on Isaac et al. (2007) or Mooers et al. (2008).
+#' Accepted values are 'Isaac', 'IUCN50', 'IUCN100' and 'IUCN500'
 #'
 #' @inheritParams calculate_EDGE1
 #'
@@ -37,9 +38,9 @@ calculate_EDGE2 <- function(tree,
                             table,
                             species.col = "species",
                             RLcat.col = "RLcat",
+                            sort.list = FALSE,
                             ext.prob = "Isaac",
                             verbose = TRUE,
-                            sort.list  = FALSE,
                             return.all = FALSE,
                             seed = NULL){
 
@@ -161,6 +162,146 @@ calculate_EDGE2 <- function(tree,
   return(tree_dat)
   }
 }
+
+
+
+#' EDGE2 calculating function for a multiPhylo tree object.
+#'
+#'
+#' @inheritParams calculate_EDGE1
+#' @inheritParams calculate_EDGE2
+#' @inheritParams calculate_EDGE1_multiphylo
+#'
+#' @returns A list of length equal to the number of trees included in the 'multiPhylo' object, storing information resulting
+#' from the `calculate_EDGE2` function used based on the specified method. If `return.all` is set to TRUE, the returned object will be a list
+#' storing individual results of the `calculate_EDGE2` without summarising and including also `tree` and `ePDloss` for each tree in the 'multitree' object.
+#'
+#' @author I. Ramos-Gutiérrez.
+#'
+#' @export
+#'
+calculate_EDGE2_multiphylo <- function(multitree,
+                                      table,
+                                      species.col = "species",
+                                      RLcat.col = "RLcat",
+                                      sort.list = FALSE,
+                                      ext.prob = "Isaac",
+                                      verbose = TRUE,
+                                      return.all = FALSE,
+                                      seed = NULL,
+                                      # params for multi
+                                      summarise = TRUE,
+                                      parallelize = FALSE,
+                                      n.cores = NULL,
+                                      ...){
+
+  if(!inherits(multitree, "multiPhylo")){stop("multitree should be an object of class 'multiPhylo'")}
+
+  # check column names and rename
+  if(!species.col %in% colnames(table)){
+    stop("Column '", species.col, "' is not a column name in your table.\nPlease check or alternatively assign 'species' as column name in your table")
+  }
+
+  if(!RLcat.col %in% colnames(table)){
+    stop("Column '", RLcat.col, "' is not a column name in your table.\nPlease check or alternatively assign 'RLcat' as column name in your table")
+  }
+  table <- table[,c(species.col, RLcat.col)]
+  colnames(table) <-  c("species", "RLcat")
+
+  if(!all(unique(unlist(sapply(multitree, '[', "tip.label"))) %in% table$species)){
+    warning("Some species in a 'tree$tip.label' are not included in 'table$species'")
+  }
+
+  if(!all(table$species %in% unique(unlist(sapply(multitree, '[', "tip.label"))))){
+    stop("Some species in 'table$species' are not included in a 'tree$tip.label'")
+  }
+
+  if(is.null(seed)){
+    seed <- round(runif(1, 1, 999999999))
+    if(isTRUE(verbose)){message(paste0("Seed for `future` package has been set to: ", seed, "\n"))}
+    set.seed(seed)
+
+  }
+  if(isTRUE(parallelize)){
+    if(is.null(n.cores)){
+      n.cores <- future::availableCores()-1
+    }
+    if(isTRUE(n.cores > future::availableCores())){
+      message(paste0("n.cores value greater than available. Setting maximum-1 (", future::availableCores()-1, ")"))
+      n.cores <- future::availableCores()-1
+    }
+
+
+    future::plan(future::multisession, workers = n.cores)
+
+    EDGElist <- future.apply::future_lapply(multitree,
+                                            calculate_EDGE2,
+                                            table = table,
+                                            species.col = "species",
+                                            RLcat.col = "RLcat",
+                                            ext.prob = ext.prob,
+                                            sort.list = sort.list,
+                                            verbose = verbose,
+                                            return.all = return.all,
+                                            # ... ,
+
+                                            future.seed = seed
+    )
+
+    future::plan(future::sequential)
+  }else{
+    EDGElist <- future.apply::future_lapply(multitree,
+                                            calculate_EDGE2,
+                                            table = table,
+                                            species.col = "species",
+                                            RLcat.col = "RLcat",
+                                            ext.prob = ext.prob,
+                                            sort.list = sort.list,
+                                            verbose = verbose,
+                                            return.all = return.all,
+                                            # ... ,
+
+                                            future.seed = seed
+    )
+  }
+
+  if(!isTRUE(return.all)){
+  EDGElist_tree <- lapply(1:length(multitree), function(i){EDGElist[[i]] |> dplyr::mutate(tree = i)})
+  }
+
+  if (!isTRUE(return.all) & isTRUE(summarise)){
+
+    EDGElist_ret <- EDGElist_tree |>
+      dplyr::bind_rows() |>
+      dplyr::group_by(species) |>
+      dplyr::summarise(TBLmn = mean(TBL),
+
+                       pextmed = median(pext),
+                       pextiqr = IQR(pext),
+                       pextmed = median(pext),
+                       pextiqr = IQR(pext),
+
+                       EDmn = mean(ED),
+                       EDsd = sd(ED),
+                       EDmed = median(ED),
+                       EDiqr = IQR(ED),
+
+                       EDGEmn = mean(EDGE),
+                       EDGEsd = sd(EDGE),
+                       EDGEmed = median(EDGE),
+                       EDGEiqr = IQR(EDGE)     ) |>
+      dplyr::left_join(table, by= "species") |>
+      dplyr::relocate(RLcat , .after = species)
+
+    if(isTRUE(sort.list)){EDGElist_ret <- dplyr::arrange(EDGElist_ret, dplyr::desc(EDGEmed))}
+  }
+
+  if( isTRUE(return.all)                     ){return(EDGElist)}
+  if(!isTRUE(return.all) & !isTRUE(summarise)){return(EDGElist_tree)}
+  if(!isTRUE(return.all) &  isTRUE(summarise)){return(EDGElist_ret)}
+}
+
+
 
 
 

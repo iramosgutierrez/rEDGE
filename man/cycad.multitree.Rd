@@ -7,13 +7,13 @@
 \format{
 A mutliPhylo object
 \describe{
-100 phylogenies object including 337 species of cycads.
+10 phylogenies object including 337 species of cycads.
 }
 }
 \usage{
 cycad.multitree
 }
 \description{
-100 phylogenies of cycads oftained from Forest et al. (2018)
+10 phylogenies of cycads obtained from Forest et al. (2018)
 }
 \keyword{datasets}

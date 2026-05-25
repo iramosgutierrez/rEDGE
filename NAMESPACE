@@ -2,7 +2,8 @@
 
 export(calculate_EDGE)
 export(calculate_EDGE1)
+export(calculate_EDGE1_multiphylo)
 export(calculate_EDGE2)
-export(calculate_EDGE_multiphylo)
-export(calculate_EDGE_multiple)
+export(calculate_EDGE2_multiphylo)
+export(calculate_EDGE2_multiple)
 export(calculate_PD_indicator)
