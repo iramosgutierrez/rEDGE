@@ -83,7 +83,7 @@ tab_cyc <- cycad.table |>
 
 <div style="display: flex;">
 
-<div style="width: 60%;">
+<div style="width: 55%;">
 
 ```{r, echo=F}
 tree_mono
@@ -105,7 +105,7 @@ tab_mono
 
 <div style="display: flex;">
 
-<div style="width: 60%;">
+<div style="width: 55%;">
 
 ```{r, echo=F}
 tcyc 

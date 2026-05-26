@@ -1,7 +1,7 @@
 Package: rEDGE
 Type: Package
 Title: Evolutionarily Distinct and Globally Endangered calculator
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
   c(
     person(given = "Ignacio", family = "Ramos-Gutierrez", email = "ig.ramosgutierrez@gmail.com", role = c("aut", "cre", "cph"),

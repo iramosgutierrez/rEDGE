@@ -56,7 +56,7 @@ assessments, performed in 2003 and 2014).
 
 <div style="display: flex;">
 
-<div style="width: 60%;">
+<div style="width: 55%;">
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
@@ -173,7 +173,7 @@ NT
 
 <div style="display: flex;">
 
-<div style="width: 60%;">
+<div style="width: 55%;">
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
