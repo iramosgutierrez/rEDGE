@@ -199,43 +199,202 @@ EDGE1_mult <- calculate_EDGE(cycad.multitree, # Just use a 'multiPhylo' object
                              )
 ```
 
-<!-- ## EDGE2 -->
-<!-- In order to take into account the extinction probability of closely related taxa as well as uncertainty in the extinction probability of species, Gumbs *et al.*, 2023 designed a new methodology, termed EDGE2. -->
+### A new EDGE metric (EDGE2)
+In 2023, [Gumbs *et al.*](https://doi.org/10.1371/journal.pbio.3001991) developed an updated version of the EDGE metric, termed EDGE2, which incorporates the extinction probability of closely related taxa into the ED facet, as well as uncertainty in species' probability of extinction.
 
-<!-- In this new approach, a probabilty of extinction is sampled from a continuous distribution based on the IUCN Red List category, and ED2 and EDGE" values can be calculated **(*develop more thoroughly...*)**.  -->
+In this new approach, a random probability of extinction is sampled from a continuous distribution based on its IUCN Red List category, therefore results may slightly vary every time the function is ran. 
 
-<!-- ```{r EDGE2} -->
-<!-- EDGE2 <- calculate_EDGE2(tree = monotreme.tree,  -->
-<!--                          table = monotreme.table,  -->
-<!--                          sort.list = T, # to get the list sorted by decreasing EDGE value -->
-<!--                          verbose = F) -->
+#### EDGE2 for a single tree
+```{r EDGE2_basic}
 
-<!-- knitr::kable(EDGE2) -->
-<!-- ``` -->
+EDGE2 <- calculate_EDGE2(tree = monotreme.tree,
+                         table = monotreme.table,
+                         sort.list = T, # to get the list sorted by decreasing EDGE value
+                         verbose = F)
 
-<!-- As this EDGE score is iteration dependant (i.e. there is a random factor in the sampling of extinction probabilty), a set of EDGE2 values can be calculated and averaged posteriorly. This multiple calculation is performed by `calculate_EDGE2_multiple` function, which allows to parallelize in order to speed computation times. In this example we are calculating EDGE scores 50 times and averaging the results after. -->
+knitr::kable(EDGE2)
+
+# Alternatively, it can also be ran within the wrapper function
+EDGE2 <- calculate_EDGE(tree = monotreme.tree,
+                        table = monotreme.table,
+                        method ="EDGE2",
+                        sort.list = T, # to get the list sorted by decreasing EDGE value
+                        verbose = F)
+```
+
+Nevertheless, there are several parameters we can incorporate to EDGE2 analyses. First, we can define a random seed to assure replicability of results (using parameter `seed`). Also, we can modify the probability function were extinction probabilty is sampled from. By default, the function uses "Isaac" distribution (defined in Isaac *et al.*, 2007), where every category is twice as probabe of becoming extinct than its predecessor. However, other probability functions were defined in Mooers *et al.* (2008) namely "IUNC50","IUNC100" and "IUNC500", which can be incorporated in the `ext.prob` parameter. Last, we can obtain not only an EDGE list, but also a probabilty of extinction-weighted tree plus an expected PD loss value from the EDGE2 analysis. Although not commonly needed, they can be retrieved if parameter `return.all` is set to `TRUE`. Last, if we do not specify it otherwise (with `verbose = FALSE`), the function will output some messages and print the current progress status (especially useful for large datasets).
+
+```{r EDGE2_param}
+
+EDGE2_ext <- calculate_EDGE2(tree = monotreme.tree,
+                         table = monotreme.table,
+                         sort.list = T,
+                         ext.prob = "IUCN50", 
+                         return.all = FALSE,
+                         verbose = F,        # Not used here as printing is not optimized for a website
+                         seed = 123456       # Using a same seed, we should always get an identical result
+                         )
+
+knitr::kable(EDGE2_ext)
+
+# And also in th wrapper function!
+EDGE2_ext <- calculate_EDGE(tree = monotreme.tree,
+                            table = monotreme.table,
+                            method = "EDGE2",
+                            sort.list = T,
+                            ext.prob = "IUCN50", 
+                            return.all = FALSE,
+                            verbose = F,        # Not used here as printing is not optimized for a website
+                            seed = 123456       # Using a same seed, we should always get an identical result
+                            )
+```
 
 
-<!-- ```{r EDGE2mult, message=F, warning=F} -->
+#### EDGE2 for a multiPhylo object
 
-<!-- EDGE2mult <- calculate_EDGE2_multiple(tree = monotreme.tree,  -->
-<!--                                       table = monotreme.table,  -->
-<!--                                       n.iter = 50, -->
-<!--                                       parallelize = TRUE, -->
-<!--                                       n.cores = 10 -->
-<!--                                       ) -->
+Exactly as we did for EDGE1, if we use a multiPhylo object instead of a phylo one, we can calculate EDGE2 metrics for each individual tree. Function parameters and use are identical as explained before, just specifying to use EDGE2 in the specific or wrapper function. 
+As a note, results summarizing across trees is not enabled in case `return.all` is set to `TRUE`, but a list of length equal to the number of trees will be returned.
+
+```{r EDGE2_multiphylo}
+
+EDGE2_multiphy <- calculate_EDGE2_multiphylo(multitree = cycad.multitree,
+                                             table = cycad.table,
+                                             RLcat.col = "RL_2014",
+                                             sort.list = T,
+                                             seed = 92442,
+                                             verbose = F
+                                             )
+
+knitr::kable(head(EDGE2_multiphy))
+
+# And also in th wrapper function!
+EDGE2_multiphy <- calculate_EDGE(cycad.multitree,
+                                 table = cycad.table,
+                                 RLcat.col = "RL_2014",
+                                 sort.list = T,
+                                 seed = 92442,
+                                 verbose = F
+                                 )
+```
+
+#### Multiple iterations of EDGE2
+
+As the EDGE2 score is iteration-dependent (i.e. there is a random factor in the sampling of extinction probabilty), the EDGE2 score calculation can be ran independently a number of times and summarised posteriorly. This multiple calculation is performed by `calculate_EDGE2_multiple` function, which also allows to parallelize in order to speed computation times. In this case, the evolutionary information stays identical, but probability of extinction varies across replicates. This function also enables the incorporation of a multiPhylo object, so we could apply both probability of extinction and phylogenetic uncertainty into EDGE score calculations. In these examples we are calculating EDGE scores 10 times (although we recommend using larger number of replicates), and averaging the results after.
+
+In case we want to use the wrapper function, we just have to specifying a number of iterations in `n.iter`. This applies both to 'phylo' and 'multiPhylo' objects (note that in case no `n.iter` value is specified, a simple `calculate_EDGE2()` is ran).
+
+```{r EDGE2_mult, eval=FALSE}
+
+EDGE2mult <- calculate_EDGE2_multiple(tree = monotreme.tree,
+                                      table = monotreme.table,
+                                      n.iter = 10,
+                                      sort.list = T,
+                                      parallelize = TRUE,
+                                      n.cores = 10, 
+                                      verbose = F, 
+                                      seed = 314159
+                                      )
+
+# Identical but in wrapper function...
+EDGE2mult_wr <- calculate_EDGE(tree = monotreme.tree,
+                            table = monotreme.table,
+                            method = "EDGE2",
+                            n.iter = 10,
+                            parallelize = TRUE,
+                            n.cores = 10, 
+                            verbose = F, 
+                            seed = 314159
+                            )
+
+# Also working for a 'multiPhylo'
+EDGE2mult_multiphylo <- calculate_EDGE2_multiple(cycad.multitree,
+                                                 table = cycad.table, 
+                                                 RLcat.col ="RL_2003",
+                                                 n.iter = 5,
+                                                 parallelize = TRUE,
+                                                 n.cores = 10, 
+                                                 verbose = F, 
+                                                 seed = 314159
+                                                 )
+
+# And 'multiPhylo' in the wrapper
+EDGE2mult_multiphylo_wr <- calculate_EDGE(tree = cycad.multitree,
+                                          table = cycad.table, 
+                                          RLcat.col ="RL_2003",
+                                          method = "EDGE2",
+                                          n.iter = 5,
+                                          parallelize = TRUE,
+                                          n.cores = 10, 
+                                          verbose = F, 
+                                          seed = 314159
+                                          )
+
+```
 
 
-<!-- # Now we summarise table results... -->
-<!-- EDGE2mult_summ <- EDGE2mult |>  -->
-<!--   bind_rows()  |>  -->
-<!--   group_by(species) |>  -->
-<!--   summarise(RL.cat = paste0(unique(RL.cat)), -->
-<!--             TBL  = mean(TBL ), -->
-<!--             pext = mean(pext), -->
-<!--             ED   = mean(ED  ), -->
-<!--             EDGE = mean(EDGE) ) |>  -->
-<!--   arrange(desc(EDGE)) -->
+## Phylogeny informed indicators
+These complemetary functiosn are also phylogeny-informed metrics laying on similar objectives as the creation of an EDGE ranking. However, as their aim is not to produce an EDGE ranking list, they have their own functions but are not considered in the wrapping function.
 
-<!-- knitr::kable(EDGE2mult_summ) -->
-<!-- ``` -->
+### The Phylogenetic Diversity indicator (PDi)
+
+The Phylogenetic Diversity indicator is a metric used to evaluate how much phylogenetic diversity is expected to be lost due to extinction.
+PDi was developed by IUCN's Phylogenetic Diversity Task Force, so make sure to check out their website and learn more! 
+
+<https://www.pdtf.org/pd-indicator>
+
+Phylogenetic Diversity indicator rests on the conception of the EDGE2 framework. In fact, the PDi information is part of what `calculate_EDGE2()` returns if you specify `return.all = TRUE`. 
+
+PDi is 
+
+```{r summarising_results}
+
+PDi <-  calculate_PD_indicator(cycad.multitree, 
+                                      cycad.table, 
+                                      time.cols = "RL_2003", 
+                                      verbose = F)
+```
+### The EDGE indicator (EDGEi)
+
+
+## FAQ section
+
+### How to summarise results
+In case we do not want a summarised report of EDGE scores, but want to retrieve individual EDGE lists and obtain other statistics, we can do it by asking the functions not to bind results together, and do it after by ourselves. Here is an example of how we do it.
+To do so, we will use as toy example 3 cycad trees (as a multiPhylo), and do 5 EDGE2 iterations.
+```{r summarising_results}
+
+my.results <- calculate_EDGE(tree = cycad.multitree[1:3], # By subsetting we keep just a three-tree multiPhylo 
+                             table = cycad.table,
+                             species.col = "species",     # Not really needed, as we use the default
+                             RLcat.col = "RL_2003",       # This one is needed, as we are not using the default (i.e. 'RLcat')
+                             n.iter = 5,                  # For each tree, calculate 5 extinction probability values
+                             summarise = F,               # Do not summarise, as we will do it by ourselves! 
+                             seed = 123,
+                             verbose = F
+                             )
+
+# my.results is not a data frame, but a list with all the results stored!
+class(my.results)
+
+
+# Now we can extract and combine results
+my.results_df <- bind_rows(my.results)
+
+# Now we have individual results, but see how we have a column specifying which tree and iteration each value comes from:
+str(my.results_df)
+
+
+# Now we can summarise results as we want.
+# For example, I am going to extract the median, maximum and minimum values of EDGE for each species (different to the summarised by default)
+
+my.results_df_summ <- my.results_df |> 
+  group_by(species) |>                    # This makes the summary to summarise values for each species!
+  summarise(EDGEmean = mean(EDGE),        # Use whichever function you want! (min(), max(), mean(), median(), sd(), etc...)
+            EDGEmax = max(EDGE),
+            EDGEmin = min(EDGE)) |> 
+  
+  arrange(desc(EDGEmean))                # This is used to sort the summarised list by descending EDGEmean
+
+# And now we have our table with custom summarizing options!
+kable(head(my.results_df_summ))
+```
