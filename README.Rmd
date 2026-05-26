@@ -344,7 +344,7 @@ PDi was developed by IUCN's Phylogenetic Diversity Task Force, so make sure to c
 
 Phylogenetic Diversity indicator rests on the conception of the EDGE2 framework. In fact, the PDi information is part of what `calculate_EDGE2()` returns if you specify `return.all = TRUE`. 
 
-PDi is 
+PDi is  
 
 ```{r summarising_results}
 
