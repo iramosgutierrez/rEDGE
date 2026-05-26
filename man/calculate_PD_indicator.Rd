@@ -4,10 +4,10 @@
 \alias{calculate_PD_indicator}
 \title{Phylogenetic Diversity indicator calculating function}
 \usage{
-calculate_PD_indicator(trees, table, time.cols, ...)
+calculate_PD_indicator(tree, table, time.cols, seed = NULL, ...)
 }
 \arguments{
-\item{trees}{An object of class 'phylo' or 'mutliPhylo' where to calculate the PDi}
+\item{tree}{An object of class 'phylo' or 'mutliPhylo' where to calculate the PDi}
 
 \item{table}{a data.frame containing a column names 'species' with all taxa in the tree,
 and columns storing Red List categories.}
