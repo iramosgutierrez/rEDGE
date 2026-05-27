@@ -4,28 +4,53 @@
 \alias{calculate_PD_indicator}
 \title{Phylogenetic Diversity indicator calculating function}
 \usage{
-calculate_PD_indicator(tree, table, time.cols, seed = NULL, ...)
+calculate_PD_indicator(
+  tree,
+  table,
+  species.col = "species",
+  RLcat.cols,
+  n.iter = NULL,
+  summarise = TRUE,
+  ...
+)
 }
 \arguments{
-\item{tree}{An object of class 'phylo' or 'mutliPhylo' where to calculate the PDi}
+\item{tree}{a phylo object.}
 
-\item{table}{a data.frame containing a column names 'species' with all taxa in the tree,
-and columns storing Red List categories.}
+\item{table}{a tibble or data frame with two columns, including species names and Red List categories.}
 
-\item{time.cols}{column names of all times whose PDi should be calculated.}
+\item{species.col}{column storing species names. If not specified, a column named "species" will be searched for.}
+
+\item{RLcat.cols}{names of columns storing Red List assessments. to calculate Phylogenetic Diversity indicator.
+More than one column (generally used for different time points) are enabled, although PDi can be calculated for just one column.}
+
+\item{n.iter}{Integer. Number of times the function will be run.}
+
+\item{summarise}{Logical. If FALSE, a list of dataframes outputted from `calculate_EDGE1` function will be returned,
+one for each tree stored in the 'multitree' `multiPhylo` object. If FALSE, results will be summarised into a single table,
+with mean, standard deviation, median and inter-quartile ranges for ED and EDGE metrics across trees.}
+
+\item{...}{More parameters to include in the EDGE2 calculating function (`ext.prob`, `summarise`, `seed`, `verbose`)}
 }
 \value{
-a list including a dataframe for each time column, where PD, ePDloss and PDi are shown
+a data frame including where PD, ePDloss and PDi statistics.
+If `summarise = FALSE`, a list with individual iteration and tree values will be returned.
 }
 \description{
 Phylogenetic Diversity indicator calculating function
 }
 \examples{
-calculate_PD_indicator(trees = cycad.tree,
-                       table = cycad.table,
-                       time.cols = c("RL_2003", "RL_2014"))
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 
+PDi <-  calculate_PD_indicator(cycad.tree,
+                               cycad.table,
+                               RLcat.cols = c("RL_2003", "RL_2014"),
+                               verbose = F,
+                               summarise = T,
+                               ext.prob ="IUCN50",
+                               seed = 1234)
 
+\dontshow{\}) # examplesIf}
 }
 \author{
 I. Ramos-Gutiérrez, R. Gumbs
