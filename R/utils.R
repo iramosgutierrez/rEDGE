@@ -91,7 +91,44 @@ cat_pext <- function(ext.prob = "Isaac"){
 # this distribution of GE2 is then used to derive the GE2 for each species for each iteration of EDGE2 calculation
 # a random value of GE2, corresponding to the appropriate RL category, can be assigned from the output to each species
 
+
+make_pext_curve <- function(ext.prob){
+
+  x_pts <- 1:5
+  y_pts <- cat_pext(ext.prob)$pext
+
+  # avoid logit blow-up at 0/1
+  eps <- 1e-12
+  y_pts <- pmin(pmax(y_pts, eps), 1 - eps)
+
+  logit_y <- log(y_pts / (1 - y_pts))
+
+  phi <- splinefun(x_pts, logit_y, method = "monoH.FC")
+
+  function(x){
+    plogis(phi(x))  # back to probability space
+  }
+}
+
 create_pext_by_cat <- function(n = 1000000, ext.prob){
+
+
+  pext.dist <- data.frame(RL.num=seq(0, 6, length.out = n)) |>
+    dplyr::mutate(pext = make_pext_curve(ext.prob)(RL.num))
+
+    pext.LC <- data.frame(RLcat = "LC", pext = pext.dist$pext[pext.dist$RL.num >= 0.0 & pext.dist$RL.num < 1.5])
+    pext.NT <- data.frame(RLcat = "NT", pext = pext.dist$pext[pext.dist$RL.num >= 1.5 & pext.dist$RL.num < 2.5])
+    pext.CD <- data.frame(RLcat = "CD", pext = pext.dist$pext[pext.dist$RL.num >= 1.5 & pext.dist$RL.num < 2.5]) # Conservation dependent ~ NT
+    pext.VU <- data.frame(RLcat = "VU", pext = pext.dist$pext[pext.dist$RL.num >= 2.5 & pext.dist$RL.num < 3.5])
+    pext.EN <- data.frame(RLcat = "EN", pext = pext.dist$pext[pext.dist$RL.num >= 3.5 & pext.dist$RL.num < 4.5])
+    pext.CR <- data.frame(RLcat = "CR", pext = pext.dist$pext[pext.dist$RL.num >= 4.5 & pext.dist$RL.num < 5.5])
+    pext.EW <- data.frame(RLcat = "EW", pext = pext.dist$pext[pext.dist$RL.num >= 5.5 & pext.dist$RL.num < 6.0]) #EW ~ CR
+
+    pext.obj <- rbind(pext.LC, pext.NT, pext.CD, pext.VU, pext.EN, pext.CR, pext.EW)
+    return(pext.obj)
+}
+
+create_pext_by_cat_LM_defunct <- function(n = 1000000, ext.prob){
 
   iucn <- sample(1:5, size=n, replace=TRUE) # 1:5 forces to be just 5 categories!
   data <- data.frame(species=c(1:n), pext=cat_pext(ext.prob)$pext[iucn])
@@ -185,8 +222,8 @@ get_extinction_prob <- function(table, ext.prob = ext.prob, verbose = T, seed = 
 }
 
 
-IQR <- function(x){ #Inter-quartilic range
-  return(stats::quantile(x, 0.75, na.rm = T) - stats::quantile(x, 0.25, na.rm = T))
+IQR <- function(x, na.rm = T){ #Inter-quartilic range
+  return(stats::quantile(x, 0.75, na.rm = na.rm) - stats::quantile(x, 0.25, na.rm = na.rm))
 }
 
 
