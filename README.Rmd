@@ -333,7 +333,7 @@ EDGE2mult_multiphylo_wr <- calculate_EDGE(tree = cycad.multitree,
 
 
 ## Phylogeny informed indicators
-These complemetary functiosn are also phylogeny-informed metrics laying on similar objectives as the creation of an EDGE ranking. However, as their aim is not to produce an EDGE ranking list, they have their own functions but are not considered in the wrapping function.
+These functions are also phylogeny-informed metrics laying on similar objectives as the creation of an EDGE ranking. However, as their aim is not to produce an EDGE ranking list, they have their own functions but are not considered in the wrapping function.
 
 ### The Phylogenetic Diversity indicator (PDi)
 
