@@ -1,3 +1,7 @@
+# rEDGE 0.2.1
+
+* Extinction probability (`ext.prob`) based on categories now fitted with a curve rather than a `lm()`. Some issues regarding IUCN50/IUCN100/IUCN500 scenarios fixed.
+
 # rEDGE 0.2.0
 
 * Functions `calculate_EDGE1()` and `calculate_EDGE2()` able to work with 'phylo' and 'multiPhylo' objects
