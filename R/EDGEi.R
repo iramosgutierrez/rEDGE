@@ -22,7 +22,6 @@
 #'                              ext.prob ="IUCN50",
 #'                              seed = 1234)
 #'
-#'
 #' @author I. Ramos-Gutiérrez
 #'
 #' @export
