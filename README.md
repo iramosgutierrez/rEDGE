@@ -6665,13 +6665,13 @@ EDGE1 <- calculate_EDGE1(tree = monotreme.tree,
 knitr::kable(EDGE1)
 ```
 
-| species                  | RLcat |       ED |     EDGE |
-|:-------------------------|:------|---------:|---------:|
-| Zaglossus_attenboroughi  | CR    | 14.23723 | 5.496331 |
-| Zaglossus_bruijnii       | CR    | 14.23723 | 5.496331 |
-| Zaglossus_bartoni        | VU    | 14.75253 | 4.143296 |
-| Ornithorhynchus_anatinus | NT    | 29.83242 | 4.121714 |
-| Tachyglossus_aculeatus   | LC    | 18.04178 | 2.946636 |
+| species                  | RLcat |       ED |     EDGE | isEDGEsp |
+|:-------------------------|:------|---------:|---------:|---------:|
+| Zaglossus_attenboroughi  | CR    | 14.23723 | 5.496331 |        0 |
+| Zaglossus_bruijnii       | CR    | 14.23723 | 5.496331 |        0 |
+| Zaglossus_bartoni        | VU    | 14.75253 | 4.143296 |        1 |
+| Ornithorhynchus_anatinus | NT    | 29.83242 | 4.121714 |        0 |
+| Tachyglossus_aculeatus   | LC    | 18.04178 | 2.946636 |        0 |
 
 Alternatively, we can use the wrapper function `calculate_EDGE()`,
 specifying to use the EDG1 method, obtaining the same result.
@@ -6721,14 +6721,14 @@ EDGE1_mult <- calculate_EDGE1_multiphylo(multitree = cycad.multitree,
 knitr::kable(head(EDGE1_mult))
 ```
 
-| species | RLcat | EDmn | EDsd | EDmed | EDiqr | EDGEmn | EDGEsd | EDGEmed | EDGEiqr |
-|:---|:---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Microcycas_calocoma | CR | 30.460684 | 0.0000000 | 30.460684 | 0.0000000 | 6.221327 | 0.0000000 | 6.221327 | 0.0000000 |
-| Stangeria_eriopus | VU | 51.699861 | 0.0000000 | 51.699861 | 0.0000000 | 5.350907 | 0.0000000 | 5.350907 | 0.0000000 |
-| Dioon_spinulosum | EN | 20.585451 | 0.0000000 | 20.585451 | 0.0000000 | 5.151461 | 0.0000000 | 5.151461 | 0.0000000 |
-| Dioon_rzedowskii | EN | 18.187219 | 0.0000000 | 18.187219 | 0.0000000 | 5.033686 | 0.0000000 | 5.033686 | 0.0000000 |
-| Cycas_zeylanica | CR | 7.726895 | 0.8544905 | 8.005929 | 0.0273349 | 4.933780 | 0.1128901 | 4.970472 | 0.0030356 |
-| Cycas_hongheensis | CR | 8.297875 | 2.0098169 | 7.974525 | 1.9394479 | 4.982857 | 0.2046339 | 4.966850 | 0.2243257 |
+| species             | RLcat |     EDmed |     EDiqr |  EDGEmed |   EDGEiqr | isEDGEsp |
+|:--------------------|:------|----------:|----------:|---------:|----------:|---------:|
+| Microcycas_calocoma | CR    | 30.460684 | 0.0000000 | 6.221327 | 0.0000000 |        1 |
+| Stangeria_eriopus   | VU    | 51.699861 | 0.0000000 | 5.350907 | 0.0000000 |        1 |
+| Dioon_spinulosum    | EN    | 20.585451 | 0.0000000 | 5.151461 | 0.0000000 |        1 |
+| Dioon_rzedowskii    | EN    | 18.187219 | 0.0000000 | 5.033686 | 0.0000000 |        1 |
+| Cycas_zeylanica     | CR    |  8.005929 | 0.0273349 | 4.970472 | 0.0030356 |        1 |
+| Cycas_hongheensis   | CR    |  7.974525 | 1.9394479 | 4.966850 | 0.2243257 |        1 |
 
 Same as before, we can use the wrapper function `calculate_EDGE()`. As
 we are using now a ‘multiPhylo’ object, `rEDGE` knows it has to run the
@@ -6771,13 +6771,13 @@ EDGE2 <- calculate_EDGE2(tree = monotreme.tree,
 knitr::kable(EDGE2)
 ```
 
-| species                  | RLcat |       TBL |      pext |       ED |       EDGE |
-|:-------------------------|:------|----------:|----------:|---------:|-----------:|
-| Zaglossus_attenboroughi  | CR    |  8.147095 | 0.9999000 | 10.32435 | 10.3233135 |
-| Zaglossus_bruijnii       | CR    |  8.147095 | 0.9475487 | 10.44464 |  9.8968025 |
-| Ornithorhynchus_anatinus | NT    | 29.832422 | 0.1276786 | 29.83242 |  3.8089632 |
-| Zaglossus_bartoni        | VU    |  9.177698 | 0.2200911 | 14.63263 |  3.2205119 |
-| Tachyglossus_aculeatus   | LC    | 14.111567 | 0.0523888 | 17.38978 |  0.9110299 |
+| species                  | RLcat |       TBL |      pext |       ED |      EDGE | isEDGEsp |
+|:-------------------------|:------|----------:|----------:|---------:|----------:|---------:|
+| Zaglossus_attenboroughi  | CR    |  8.147095 | 0.9860187 | 10.05637 | 9.9157699 |        0 |
+| Zaglossus_bruijnii       | CR    |  8.147095 | 0.8579446 | 10.34139 | 8.8723388 |        0 |
+| Ornithorhynchus_anatinus | NT    | 29.832422 | 0.1075942 | 29.83242 | 3.2097952 |        0 |
+| Zaglossus_bartoni        | VU    |  9.177698 | 0.2213432 | 13.74410 | 3.0421638 |        1 |
+| Tachyglossus_aculeatus   | LC    | 14.111567 | 0.0295209 | 17.05522 | 0.5034855 |        0 |
 
 ``` r
 
@@ -6819,13 +6819,13 @@ EDGE2_ext <- calculate_EDGE2(tree = monotreme.tree,
 knitr::kable(EDGE2_ext)
 ```
 
-| species                  | RLcat |       TBL |      pext |        ED |      EDGE |
-|:-------------------------|:------|----------:|----------:|----------:|----------:|
-| Zaglossus_bruijnii       | CR    |  8.147095 | 0.9577910 |  9.740928 | 9.3297733 |
-| Zaglossus_attenboroughi  | CR    |  8.147095 | 0.9327228 |  9.783765 | 9.1255404 |
-| Zaglossus_bartoni        | VU    |  9.177698 | 0.1310127 | 13.802169 | 1.8082597 |
-| Tachyglossus_aculeatus   | LC    | 14.111567 | 0.0154356 | 15.951546 | 0.2462222 |
-| Ornithorhynchus_anatinus | NT    | 29.832422 | 0.0001000 | 29.832422 | 0.0029832 |
+| species | RLcat | TBL | pext | ED | EDGE | isEDGEsp |
+|:---|:---|---:|---:|---:|---:|---:|
+| Zaglossus_bruijnii | CR | 8.147095 | 0.9769708 | 9.750883 | 9.5263273 | 0 |
+| Zaglossus_attenboroughi | CR | 8.147095 | 0.9724440 | 9.758349 | 9.4894470 | 0 |
+| Zaglossus_bartoni | VU | 9.177698 | 0.1253792 | 13.865303 | 1.7384204 | 1 |
+| Ornithorhynchus_anatinus | NT | 29.832422 | 0.0046078 | 29.832422 | 0.1374620 | 0 |
+| Tachyglossus_aculeatus | LC | 14.111567 | 0.0000124 | 15.984179 | 0.0001988 | 0 |
 
 ``` r
 
@@ -6864,14 +6864,14 @@ EDGE2_multiphy <- calculate_EDGE2_multiphylo(multitree = cycad.multitree,
 knitr::kable(head(EDGE2_multiphy))
 ```
 
-| species | RLcat | TBLmn | pextmed | pextiqr | EDmn | EDsd | EDmed | EDiqr | EDGEmn | EDGEsd | EDGEmed | EDGEiqr |
-|:---|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Microcycas_calocoma | CR | 29.421050 | 0.9667424 | 0.1645995 | 29.421050 | 0.0000000 | 29.421050 | 0.0000000 | 27.031599 | 2.909191 | 28.442577 | 4.8426900 |
-| Stangeria_eriopus | VU | 50.759524 | 0.2401154 | 0.0726685 | 50.759524 | 0.0000001 | 50.759524 | 0.0000002 | 12.774807 | 2.154786 | 12.188144 | 3.6886175 |
-| Cycas_pachypoda | CR | 4.448163 | 0.9561873 | 0.1692407 | 6.402405 | 3.4562819 | 7.392971 | 5.2314162 | 5.764793 | 3.170266 | 6.857173 | 4.6610448 |
-| Zamia_hymenophyllidia | CR | 4.003738 | 0.9999000 | 0.0085765 | 7.202246 | 2.2625227 | 7.556170 | 3.4260785 | 6.849319 | 2.075468 | 6.659720 | 2.7117550 |
-| Dioon_spinulosum | EN | 14.691371 | 0.4434341 | 0.1536457 | 14.755517 | 0.0259739 | 14.757158 | 0.0180991 | 7.069747 | 1.627890 | 6.534273 | 2.2693241 |
-| Cycas_zeylanica | CR | 5.670791 | 0.9704345 | 0.0512931 | 5.826520 | 1.2693475 | 6.232883 | 0.0000004 | 5.534270 | 1.274864 | 6.048604 | 0.7868939 |
+| species | RLcat | TBLmn | pextmed | pextiqr | EDmed | EDiqr | EDGEmed | EDGEiqr | isEDGEsp |
+|:---|:---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Microcycas_calocoma | CR | 29.421050 | 0.9571689 | 0.0608060 | 29.421050 | 0.0000000 | 28.160915 | 1.7889753 | 1 |
+| Stangeria_eriopus | VU | 50.759524 | 0.2609631 | 0.0753170 | 50.759525 | 0.0000011 | 13.246364 | 3.8230521 | 1 |
+| Cycas_pachypoda | CR | 4.448163 | 0.9688399 | 0.0527828 | 7.391247 | 5.1630319 | 7.243470 | 4.6586204 | 1 |
+| Zamia_hymenophyllidia | CR | 4.003738 | 0.9855904 | 0.0092305 | 7.154863 | 4.0430026 | 7.006964 | 3.7994518 | 1 |
+| Zamia_spartea | CR | 4.562735 | 0.9717970 | 0.0550429 | 7.204353 | 1.6237190 | 6.721501 | 1.5291932 | 1 |
+| Cycas_zeylanica | CR | 5.670791 | 0.9789099 | 0.0075280 | 6.232883 | 0.0000006 | 6.101431 | 0.1635617 | 1 |
 
 ``` r
 
@@ -6952,7 +6952,37 @@ EDGE2mult_multiphylo_wr <- calculate_EDGE(tree = cycad.multitree,
                                           )
 ```
 
-## Functions to calculate EDGE scores
+## Phylogeny informed indicators
+
+These functions are also phylogeny-informed metrics laying on similar
+objectives as the creation of an EDGE ranking. However, as their aim is
+not to produce an EDGE ranking list, they have their own functions but
+are not considered in the wrapping function.
+
+### The Phylogenetic Diversity indicator (PDi)
+
+The Phylogenetic Diversity indicator is a metric used to evaluate how
+much phylogenetic diversity is expected to be lost due to extinction.
+PDi was developed by IUCN’s Phylogenetic Diversity Task Force, so make
+sure to check out their website and learn more!
+
+<https://www.pdtf.org/pd-indicator>
+
+Phylogenetic Diversity indicator rests on the conception of the EDGE2
+framework. In fact, the PDi information is part of what
+`calculate_EDGE2()` returns if you specify `return.all = TRUE`.
+
+PDi is
+
+``` r
+
+PDi <-  calculate_PD_indicator(cycad.multitree, 
+                                      cycad.table, 
+                                      RLcat.cols = "RL_2003", 
+                                      verbose = F)
+```
+
+### The EDGE indicator (EDGEi)
 
 ## FAQ section
 
@@ -6986,15 +7016,16 @@ my.results_df <- bind_rows(my.results)
 
 # Now we have individual results, but see how we have a column specifying which tree and iteration each value comes from:
 str(my.results_df)
-#> 'data.frame':    5055 obs. of  8 variables:
-#>  $ species: chr  "Cycas_taitungensis" "Cycas_lane-poolei" "Cycas_revoluta" "Cycas_hoabinhensis" ...
-#>  $ RLcat  : chr  "VU" "LC" "LC" "EN" ...
-#>  $ TBL    : num  3.69 3.69 5.48 11.97 2.18 ...
-#>  $ pext   : num  0.3083 0.0581 0.0575 0.4275 0.0211 ...
-#>  $ ED     : num  3.82 4.36 5.6 11.97 2.94 ...
-#>  $ EDGE   : num  1.1767 0.2535 0.3225 5.1175 0.0622 ...
-#>  $ tree   : int  1 1 1 1 1 1 1 1 1 1 ...
-#>  $ iter   : int  1 1 1 1 1 1 1 1 1 1 ...
+#> 'data.frame':    5055 obs. of  9 variables:
+#>  $ species : chr  "Microcycas_calocoma" "Stangeria_eriopus" "Cycas_aenigma" "Cycas_sancti-lasallei" ...
+#>  $ RLcat   : chr  "CR" "VU" "EW" "EN" ...
+#>  $ TBL     : num  29.42 50.76 8.18 9.8 6.08 ...
+#>  $ pext    : num  0.992 0.226 0.968 0.745 0.991 ...
+#>  $ ED      : num  29.42 50.76 8.82 9.8 7.04 ...
+#>  $ EDGE    : num  29.18 11.48 8.54 7.31 6.98 ...
+#>  $ isEDGEsp: num  1 1 1 1 1 1 1 1 1 1 ...
+#>  $ tree    : int  1 1 1 1 1 1 1 1 1 1 ...
+#>  $ iter    : int  1 1 1 1 1 1 1 1 1 1 ...
 
 
 # Now we can summarise results as we want.
@@ -7007,14 +7038,16 @@ my.results_df_summ <- my.results_df |>
             EDGEmin = min(EDGE)) |> 
   
   arrange(desc(EDGEmean))                # This is used to sort the summarised list by descending EDGEmean
+
+# And now we have our table with custom summarizing options!
 kable(head(my.results_df_summ))
 ```
 
 | species               |  EDGEmean |   EDGEmax |   EDGEmin |
 |:----------------------|----------:|----------:|----------:|
-| Microcycas_calocoma   | 26.862165 | 29.418108 | 21.200673 |
-| Stangeria_eriopus     | 11.368336 | 16.595730 |  8.711753 |
-| Zamia_hymenophyllidia |  8.785175 | 10.598029 |  5.761166 |
-| Zamia_amplifolia      |  6.296160 | 10.598031 |  3.143093 |
-| Zamia_spartea         |  6.116954 |  7.318005 |  3.855826 |
-| Cycas_hongheensis     |  5.413346 |  9.717520 |  1.550379 |
+| Microcycas_calocoma   | 28.033418 | 29.258665 | 25.252881 |
+| Stangeria_eriopus     | 11.925704 | 15.803696 |  8.727589 |
+| Zamia_hymenophyllidia |  8.897521 | 10.306422 |  6.021737 |
+| Zamia_amplifolia      |  6.461493 | 10.326554 |  3.566939 |
+| Zamia_spartea         |  6.233912 |  7.277973 |  4.618618 |
+| Cycas_hongheensis     |  5.499374 |  9.392169 |  1.893912 |

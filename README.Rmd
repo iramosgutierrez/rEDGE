@@ -346,11 +346,11 @@ Phylogenetic Diversity indicator rests on the conception of the EDGE2 framework.
 
 PDi is  
 
-```{r summarising_results}
+```{r PDindicator}
 
 PDi <-  calculate_PD_indicator(cycad.multitree, 
                                       cycad.table, 
-                                      time.cols = "RL_2003", 
+                                      RLcat.cols = "RL_2003", 
                                       verbose = F)
 ```
 ### The EDGE indicator (EDGEi)
