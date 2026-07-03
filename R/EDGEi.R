@@ -59,20 +59,23 @@ calculate_EDGE_index <- function(tree,
     )
 
 
+
     if(length(tree) == 1 & is.null(n.iter)){
 
       edge_spp_tn_comp <- edge_values_tn[[1]]|>
         dplyr::summarise(nspp = dplyr::n(),
-                         nEDGEspp = sum(isEDGEsp == 1, na.rm = TRUE),
-                         EDGEi = nEDGEspp / nspp)
+                         nEDspp = sum(ED > median(ED)),
+                         nEDGEspp = sum(ED > median(ED) & RLcat %in% c("VU", "EN", "CR", "EW", "EX")),
+                         EDGEi = nEDGEspp / nEDspp)
 
     }else if(length(tree) == 1 & !is.null(n.iter)){
 
       edge_spp_tn_comp <- lapply(1:n.iter, function(i){
         edge_spp_tn_comp <- edge_values_tn[[i]][[1]]|>
           dplyr::summarise(nspp = dplyr::n(),
-                           nEDGEspp = sum(isEDGEsp == 1, na.rm = TRUE),
-                           EDGEi = nEDGEspp / nspp) |>
+                           nEDspp = sum(ED > median(ED)),
+                           nEDGEspp = sum(ED > median(ED) & RLcat %in% c("VU", "EN", "CR", "EW", "EX")),
+                           EDGEi = nEDGEspp / nEDspp) |>
           dplyr::mutate(iter = i)
       })
 
@@ -82,8 +85,9 @@ calculate_EDGE_index <- function(tree,
         lapply(1:length(tree), function(t){
           edge_values_tn[[i]][[t]] |>
             dplyr::summarise(nspp = dplyr::n(),
-                             nEDGEspp = sum(isEDGEsp == 1, na.rm = TRUE),
-                             EDGEi = nEDGEspp / nspp) |>
+                             nEDspp = sum(ED > median(ED)),
+                             nEDGEspp = sum(ED > median(ED) & RLcat %in% c("VU", "EN", "CR", "EW", "EX")),
+                             EDGEi = nEDGEspp / nEDspp) |>
             dplyr::mutate(iter = i, tree = t)
         })
       })
@@ -100,12 +104,15 @@ calculate_EDGE_index <- function(tree,
         EDGEi_df <- EDGEi_df |>
           dplyr::summarise(nspp  = mean(nspp ),
 
+                           nEDspp_mn = mean(nEDspp),
+                           nEDspp_sd = sd(nEDspp),
+
                            nEDGEspp_mn = mean(nEDGEspp),
                            nEDGEspp_sd = sd(nEDGEspp),
 
 
                            EDGEi_mn = mean(EDGEi),
-                           EDGEi_sd = sd(EDGEi)             )
+                           EDGEi_sd = sd(EDGEi)  )
       }
 
 
