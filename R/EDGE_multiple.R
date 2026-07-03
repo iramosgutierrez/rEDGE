@@ -30,7 +30,7 @@ calculate_EDGE2_multiple <- function(tree,
                                      table,
                                      species.col = "species",
                                      RLcat.col = "RLcat",
-                                     sort.list = FALSE,
+                                     sort.list = TRUE,
                                      ext.prob = "Isaac",
                                      return.all = FALSE,
                                      summarise = TRUE,
@@ -127,18 +127,16 @@ if(!isTRUE(return.all)){
 
                        pextmed = median(pext),
                        pextiqr = IQR(pext),
-                       pextmed = median(pext),
-                       pextiqr = IQR(pext),
 
-                       EDmn = mean(ED),
-                       EDsd = sd(ED),
                        EDmed = median(ED),
                        EDiqr = IQR(ED),
 
-                       EDGEmn = mean(EDGE),
-                       EDGEsd = sd(EDGE),
                        EDGEmed = median(EDGE),
-                       EDGEiqr = IQR(EDGE)     ) |>
+                       EDGEiqr = IQR(EDGE),
+
+                       isEDGEsp = mean(isEDGEsp)) |>
+      dplyr::mutate(isEDGEsp = ifelse(isEDGEsp >= 0.95, 1, 0)) |> # Is EDGE in 95% or more iterations
+
       dplyr::left_join(table, by= "species") |>
       dplyr::relocate(RLcat , .after = species)
 

@@ -16,7 +16,7 @@ calculate_EDGE1 <- function(tree,
                             table,
                             species.col = "species",
                             RLcat.col = "RLcat",
-                            sort.list = FALSE,
+                            sort.list = TRUE,
                             ...){
 
   # check column names and rename
@@ -60,6 +60,11 @@ calculate_EDGE1 <- function(tree,
 
   table$EDGE <- log(1+table$ED) + table$pext*(log(2))
 
+  EDmed <- median(table$ED)
+  table$isEDGEsp <- 0
+  table$isEDGEsp[table$ED >= EDmed & table$RLcat %in% c("VU", "EN", "CR", "EW", "EX")] <- 1
+
+
   table <- table[,-which(colnames(table) == "pext")]
 
    if(isTRUE(sort.list)){
@@ -67,9 +72,6 @@ calculate_EDGE1 <- function(tree,
      rownames(table) <- 1:nrow(table)
    }
 
-   # EDmedian <- median(table$ED)
-   # table$EDGEspp <- "N"
-   # table$EDGEspp[table$ED > EDmedian & table$RL.cat %in% c("VU", "EN", "CR", "EW")]
 
    return(table)
 }
@@ -98,7 +100,7 @@ calculate_EDGE1_multiphylo <- function(multitree,
                                        table,
                                        species.col = "species",
                                        RLcat.col = "RLcat",
-                                       sort.list = FALSE,
+                                       sort.list = TRUE,
                                        #parameters for multi
                                        summarise = TRUE,
                                        parallelize = FALSE,
@@ -172,17 +174,15 @@ calculate_EDGE1_multiphylo <- function(multitree,
       dplyr::bind_rows() |>
       # dplyr::select(-`RLcat`) |>
       dplyr::group_by(species) |>
-      dplyr::summarise(EDmn = mean(ED),
-                       EDsd = sd(ED),
-
-                       EDmed = median(ED),
+      dplyr::summarise(EDmed = median(ED),
                        EDiqr = IQR(ED),
 
-                       EDGEmn = mean(EDGE),
-                       EDGEsd = sd(EDGE),
-
                        EDGEmed = median(EDGE),
-                       EDGEiqr = IQR(EDGE)     ) |>
+                       EDGEiqr = IQR(EDGE),
+
+                       isEDGEsp = mean(isEDGEsp)) |>
+      dplyr::mutate(isEDGEsp = ifelse(isEDGEsp >= 0.5, 1, 0)) |> # Over median in more than 50% of trees
+
       dplyr::left_join(table, by= "species") |>
       dplyr::relocate(RLcat , .after = species)
 
@@ -192,9 +192,6 @@ calculate_EDGE1_multiphylo <- function(multitree,
     EDGElist_ret <- EDGElist_tree
   }
 
-  # EDmedian <- median(table$ED)
-  # table$EDGEspp <- "N"
-  # table$EDGEspp[table$ED > EDmedian & table$RL.cat %in% c("VU", "EN", "CR", "EW")]
 
   return(EDGElist_ret)
 }

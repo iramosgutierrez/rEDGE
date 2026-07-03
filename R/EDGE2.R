@@ -10,7 +10,7 @@
 #' @returns A list containing 3 slots if `return.all` is TRUE. If not, only the first item (EDGE list) will be returned.
 #' \itemize{
 #'  \item{list: }{will output specific TBL (terminal branch length), pext (sampled probability of extinction), ED (evolutionary distinctiveness), and EDGE (EDGE index).}
-#'  \item{tree: }{the input tree.}
+#'  \item{tree: }{the input tree with branches weighted using extinction probability.}
 #'  \item{ePDloss: }{complete PD (phylogenetic diversity) and ePDloss (expected PD loss). Units are as in the input tree  (generally Million years).}
 #' }
 #'
@@ -38,7 +38,7 @@ calculate_EDGE2 <- function(tree,
                             table,
                             species.col = "species",
                             RLcat.col = "RLcat",
-                            sort.list = FALSE,
+                            sort.list = TRUE,
                             ext.prob = "Isaac",
                             verbose = TRUE,
                             return.all = FALSE,
@@ -138,10 +138,9 @@ calculate_EDGE2 <- function(tree,
 
   tree_dat$ED <- tree_dat$EDGE / tree_dat$pext
 
-  # Not tested: copied and modif. EDGE1
-  # EDGEmedian <- median(tree_dat$ED)
-  # tree_dat$EDGEspp <- "N"
-  # tree_dat$EDGEspp[tree_dat$EDGE > EDGEmedian & tree_dat$RLcat %in% c("VU", "EN", "CR", "EW")]
+  EDmed <- median(tree_dat$ED)
+  tree_dat$isEDGEsp <- 0
+  tree_dat$isEDGEsp[tree_dat$ED >= EDmed & tree_dat$RLcat %in% c("VU", "EN", "CR", "EW", "EX")] <- 1
 
   # reorder tree
   tree <- reorder_tree(tree, order(ord))
@@ -184,7 +183,7 @@ calculate_EDGE2_multiphylo <- function(multitree,
                                       table,
                                       species.col = "species",
                                       RLcat.col = "RLcat",
-                                      sort.list = FALSE,
+                                      sort.list = TRUE,
                                       ext.prob = "Isaac",
                                       verbose = TRUE,
                                       return.all = FALSE,
@@ -278,18 +277,16 @@ calculate_EDGE2_multiphylo <- function(multitree,
 
                        pextmed = median(pext),
                        pextiqr = IQR(pext),
-                       pextmed = median(pext),
-                       pextiqr = IQR(pext),
 
-                       EDmn = mean(ED),
-                       EDsd = sd(ED),
                        EDmed = median(ED),
                        EDiqr = IQR(ED),
 
-                       EDGEmn = mean(EDGE),
-                       EDGEsd = sd(EDGE),
                        EDGEmed = median(EDGE),
-                       EDGEiqr = IQR(EDGE)     ) |>
+                       EDGEiqr = IQR(EDGE),
+
+                       isEDGEsp = mean(isEDGEsp)) |>
+      dplyr::mutate(isEDGEsp = ifelse(isEDGEsp >= 0.5, 1, 0)) |> # Over median in more than 50% of trees
+
       dplyr::left_join(table, by= "species") |>
       dplyr::relocate(RLcat , .after = species)
 
