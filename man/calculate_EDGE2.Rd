@@ -9,7 +9,7 @@ calculate_EDGE2(
   table,
   species.col = "species",
   RLcat.col = "RLcat",
-  sort.list = FALSE,
+  sort.list = TRUE,
   ext.prob = "Isaac",
   verbose = TRUE,
   return.all = FALSE,
@@ -38,7 +38,7 @@ Accepted values are 'Isaac', 'IUCN50', 'IUCN100' and 'IUCN500'}
 A list containing 3 slots if `return.all` is TRUE. If not, only the first item (EDGE list) will be returned.
 \itemize{
  \item{list: }{will output specific TBL (terminal branch length), pext (sampled probability of extinction), ED (evolutionary distinctiveness), and EDGE (EDGE index).}
- \item{tree: }{the input tree.}
+ \item{tree: }{the input tree with branches weighted using extinction probability.}
  \item{ePDloss: }{complete PD (phylogenetic diversity) and ePDloss (expected PD loss). Units are as in the input tree  (generally Million years).}
 }
 }

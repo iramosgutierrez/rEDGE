@@ -9,7 +9,7 @@ calculate_EDGE1(
   table,
   species.col = "species",
   RLcat.col = "RLcat",
-  sort.list = FALSE,
+  sort.list = TRUE,
   ...
 )
 }

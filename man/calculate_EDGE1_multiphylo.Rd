@@ -9,7 +9,7 @@ calculate_EDGE1_multiphylo(
   table,
   species.col = "species",
   RLcat.col = "RLcat",
-  sort.list = FALSE,
+  sort.list = TRUE,
   summarise = TRUE,
   parallelize = FALSE,
   n.cores = NULL,

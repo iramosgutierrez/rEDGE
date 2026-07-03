@@ -9,7 +9,7 @@ calculate_EDGE2_multiple(
   table,
   species.col = "species",
   RLcat.col = "RLcat",
-  sort.list = FALSE,
+  sort.list = TRUE,
   ext.prob = "Isaac",
   return.all = FALSE,
   summarise = TRUE,

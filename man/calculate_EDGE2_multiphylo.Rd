@@ -9,7 +9,7 @@ calculate_EDGE2_multiphylo(
   table,
   species.col = "species",
   RLcat.col = "RLcat",
-  sort.list = FALSE,
+  sort.list = TRUE,
   ext.prob = "Isaac",
   verbose = TRUE,
   return.all = FALSE,
