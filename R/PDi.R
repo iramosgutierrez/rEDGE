@@ -7,7 +7,7 @@
 #' @inheritParams calculate_EDGE2_multiphylo
 #' @inheritParams calculate_EDGE2_multiple
 #'
-#' @param RLcat.cols names of columns storing Red List assessments. to calculate Phylogenetic Diversity indicator.
+#' @param RLcat.cols names of columns storing Red List assessments to calculate Phylogenetic Diversity indicator.
 #'  More than one column (generally used for different time points) are enabled, although PDi can be calculated for just one column.
 #' @param ... More parameters to include in the EDGE2 calculating function (`ext.prob`, `summarise`, `seed`, `verbose`)
 #'
@@ -34,7 +34,7 @@ calculate_PD_indicator <- function(tree,
                                    table,
                                    species.col = "species",
                                    RLcat.cols,
-                                   n.iter = NULL,
+                                   n.iter = 10,
                                    summarise = TRUE,
                                    ...){
 
@@ -91,20 +91,12 @@ calculate_PD_indicator <- function(tree,
           dplyr::summarise(PD_mn = mean(PD),
                            PD_sd = sd(PD),
 
-                           PD_med = median(PD),
-                           PD_iqr = IQR(PD),
-
                            ePDloss_mn = mean(ePDloss),
                            ePDloss_sd = sd(ePDloss),
 
-                           ePDloss_med = median(ePDloss),
-                           ePDloss_iqr = IQR(ePDloss),
 
                            PDi_mn = mean(PDi),
-                           PDi_sd = sd(PDi),
-
-                           PDi_med = median(PDi),
-                           PDi_iqr = IQR(PDi),)
+                           PDi_sd = sd(PDi)             )
       }
 
 
@@ -113,11 +105,11 @@ calculate_PD_indicator <- function(tree,
 
 
   if(isTRUE(summarise)){
-    PDi_list_sum <- lapply(RLcat.cols, function(RLcat){
-    PDi_list[[RLcat]] |> dplyr::mutate(time.col = RLcat)
+    PDi_list_sum <- lapply(RLcat.cols, function(RLcat.col){
+    PDi_list[[RLcat.col]] |> dplyr::mutate(time.col = RLcat.col)
       }) |>
-      bind_rows() |>
-      relocate(time.col, .before = PD_mn)
+      dplyr::bind_rows() |>
+      dplyr::relocate(time.col, .before = PD_mn)
     return(PDi_list_sum)
   }else{
     return(PDi_list)
