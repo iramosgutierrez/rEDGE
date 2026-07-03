@@ -54,24 +54,23 @@ calculate_EDGE_index <- function(tree,
                                      table_tn,
                                      return.all = FALSE,
                                      summarise = FALSE,
-                                     n.iter = 3
-                                     # ,
-                                     # ...
+                                     n.iter = n.iter,
+                                     ...
     )
 
 
     if(length(tree) == 1 & is.null(n.iter)){
 
       edge_spp_tn_comp <- edge_values_tn[[1]]|>
-        dplyr::summarise(nspp = n(),
+        dplyr::summarise(nspp = dplyr::n(),
                          nEDGEspp = sum(isEDGEsp == 1, na.rm = TRUE),
                          EDGEi = nEDGEspp / nspp)
 
     }else if(length(tree) == 1 & !is.null(n.iter)){
 
       edge_spp_tn_comp <- lapply(1:n.iter, function(i){
-        edge_values_tn[[i]][[1]]|>
-          dplyr::summarise(nspp = n(),
+        edge_spp_tn_comp <- edge_values_tn[[i]][[1]]|>
+          dplyr::summarise(nspp = dplyr::n(),
                            nEDGEspp = sum(isEDGEsp == 1, na.rm = TRUE),
                            EDGEi = nEDGEspp / nspp) |>
           dplyr::mutate(iter = i)
@@ -82,7 +81,7 @@ calculate_EDGE_index <- function(tree,
       edge_spp_tn_comp <- lapply(1:n.iter, function(i){
         lapply(1:length(tree), function(t){
           edge_values_tn[[i]][[t]] |>
-            dplyr::summarise(nspp = n(),
+            dplyr::summarise(nspp = dplyr::n(),
                              nEDGEspp = sum(isEDGEsp == 1, na.rm = TRUE),
                              EDGEi = nEDGEspp / nspp) |>
             dplyr::mutate(iter = i, tree = t)
