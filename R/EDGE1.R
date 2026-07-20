@@ -53,7 +53,7 @@ calculate_EDGE1 <- function(tree,
   table$pext[table$RLcat == "CR"] <- 4
   table$pext[table$RLcat == "EW"] <- 4
 
-  ED <- suppressWarnings(caper::ed.calc(tree))
+  ED <- suppressWarnings(caper::ed.calc(tree, polytomy.cf = "none"))
   ED_res <- ED$spp
 
   table <- merge(table, ED_res)
