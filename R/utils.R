@@ -208,7 +208,9 @@ get_extinction_prob <- function(table, ext.prob = ext.prob, verbose = T, seed = 
     if(cat.i %in% c("NE", "DD")){
       # pext.i <- runif(1,0.0001, 0.9999)  # this makes DD and NE get ~ 0.5 pext in average
       set.seed(seed + which(table$species == sp))
-      pext.i <- sample(cat_pext_table$pext[cat_pext_table$pext < 0.999], size = 1)
+      NE_DD_categories <- c("LC","NT","VU","EN","CR")
+      pext.i <- sample(cat_pext_table$pext[cat_pext_table$pext < 0.999 & cat_pext_table$RLcat %in% NE_DD_categories],
+                       size = 1)
     }else{
       if(cat.i %in% c("EX", "EW")){cat.i <- "CR"}
       if(cat.i =="CD"){cat.i <-"NT"}
